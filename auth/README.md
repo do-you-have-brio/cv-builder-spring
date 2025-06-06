@@ -1,5 +1,12 @@
 # Auth Service
 
+### routes
+/register
+
+/login
+
+/verify-token
+
 ### run
 ```bash
 mvn spring-boot:run
