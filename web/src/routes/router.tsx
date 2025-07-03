@@ -4,6 +4,7 @@ import { RootLayout } from "@/layouts/root-layout";
 import { WithSession } from "@/middlewares/with-session";
 import { HomePage } from "@/pages/app/home-page";
 import { SignInPage } from "@/pages/auth/sign-in-page";
+import { SignUpPage } from "@/pages/auth/sign-up-page";
 import { NotFoundPage } from "@/pages/common/not-found-page";
 import {
   createBrowserRouter,
@@ -15,7 +16,10 @@ const publicRoutes: RouteObject[] = [
   {
     element: <AuthLayout />,
     path: "/auth",
-    children: [{ path: "sign-in", element: <SignInPage /> }],
+    children: [
+      { path: "sign-in", element: <SignInPage /> },
+      { path: "sign-up", element: <SignUpPage /> },
+    ],
   },
   { path: "*", element: <NotFoundPage /> },
 ];

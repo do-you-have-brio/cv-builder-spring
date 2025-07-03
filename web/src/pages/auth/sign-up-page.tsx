@@ -16,38 +16,37 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input, SecureInput } from "@/components/ui/input";
-import { signInSchema, type SignInSchema } from "@/schemas/auth-schema";
-import { useAuthStore } from "@/stores/auth-store";
+import { signUpSchema, type SignUpSchema } from "@/schemas/auth-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-export const SignInPage = () => {
-  const { setSession } = useAuthStore();
-
-  const location = useLocation();
+export const SignUpPage = () => {
   const navigate = useNavigate();
 
-  const form = useForm<SignInSchema>({
-    resolver: zodResolver(signInSchema),
+  const form = useForm<SignUpSchema>({
+    resolver: zodResolver(signUpSchema),
     defaultValues: {
-      email: location.state?.email ?? "",
+      name: "",
+      email: "",
       password: "",
     },
   });
 
-  const handleFormSubmit = (values: SignInSchema) => {
+  const handleFormSubmit = (values: SignUpSchema) => {
     console.log({ values });
-    setSession(true);
-    navigate("/", { replace: true });
+    navigate("/auth/sign-in", {
+      state: { email: values.email },
+      replace: true,
+    });
   };
 
   return (
     <Card className="w-full max-w-sm">
       <CardHeader>
-        <CardTitle>Sign in to your account</CardTitle>
+        <CardTitle>Sign up for an account</CardTitle>
         <CardDescription>
-          Enter your email below to login to your account
+          Enter your details below to create a new account
         </CardDescription>
       </CardHeader>
 
@@ -57,6 +56,20 @@ export const SignInPage = () => {
             className="flex flex-col gap-4"
             onSubmit={form.handleSubmit(handleFormSubmit)}
           >
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="John Doe" {...field} />
+                  </FormControl>
+                  <FormDescription />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="email"
@@ -78,11 +91,21 @@ export const SignInPage = () => {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <SecureInput
-                      placeholder="Password"
-                      type="password"
-                      {...field}
-                    />
+                    <SecureInput placeholder="Password" {...field} />
+                  </FormControl>
+                  <FormDescription />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <SecureInput placeholder="Confirm Password" {...field} />
                   </FormControl>
                   <FormDescription />
                   <FormMessage />
@@ -91,15 +114,15 @@ export const SignInPage = () => {
             />
 
             <Button type="submit" className="w-full">
-              Sign In
+              Sign Up
             </Button>
           </form>
         </Form>
 
         <div className="flex items-center justify-center">
-          <span>Don&apos;t have an account?</span>
+          <span>Already have an account?</span>
           <Button type="button" className="p-2" variant="link" asChild>
-            <Link to="/auth/sign-up">Sign up</Link>
+            <Link to="/auth/sign-in">Sign in</Link>
           </Button>
         </div>
       </CardContent>
