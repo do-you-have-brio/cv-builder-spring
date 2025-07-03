@@ -4,10 +4,19 @@ Microservics:
     sign-in: ok
 
   Api: # carlin
-    user: education
-      jobs
-      repositories
-      curriculos
+    user:
+      - education:
+          - get all education from an user GET (/educations/${user.id})
+          - create education for an user POST (/educations/${user.id})
+      - jobs:
+          - get all jobs GET (/jobs/${user.id})
+          - create job for an user POST (/jobs/${user.id})
+      - repositories:
+          - get all repositories GET (/repositories/${user.id})
+          - create repository for an user POST (/repositories/${user.id})
+      - resume:
+          - get all resumes GET (/resumes/${user.id})
+          - create resume for an user POST (/resumes/${user.id})
 
   AI: # isaac
     create a cv
@@ -19,3 +28,5 @@ Microservics:
 Config Server: # juan
 
 Discovery Server: # vitao
+
+Docker: # juan
