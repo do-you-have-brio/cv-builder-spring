@@ -7,7 +7,7 @@ spring:
   application:
     name: auth-service
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/cv-builder}
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://postgres:5432/cv-builder}
     username: ${SPRING_DATASOURCE_USERNAME:postgres}
     password: ${SPRING_DATASOURCE_PASSWORD:password}
     driver-class-name: org.postgresql.Driver
@@ -29,4 +29,4 @@ spring:
     active: dev
 
   config:
-    import: "configserver:http://localhost:8888"
+    import: "configserver:http://config-server:8888"

@@ -9,6 +9,23 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: cv-builder
 
+  discovery-server:
+    build:
+      context: ./discovery-server
+
+  config-server:
+    build:
+      context: ./config-server
+    depends_on:
+      - discovery-server
+
+  auth-service:
+    build:
+      context: ./auth
+    depends_on:
+      - discovery-server
+      - config-server
+
 volumes:
   postgres_data:
 
