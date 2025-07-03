@@ -118,3 +118,11 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  .debug {
+    border-width: 2px !important;
+    border-color: #dc2626 !important;
+    background-color: #fca5a5 !important;
+  }
+}
