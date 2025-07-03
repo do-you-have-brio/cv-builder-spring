@@ -8,19 +8,30 @@ import dyhb.cv.auth.services.AuthService;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AuthController {
 
     @Autowired
     private final AuthService authService;
+
+    @Value("${hello.message}")
+    private String helloMessage;
+
+    @GetMapping("/hello")
+    public ResponseEntity<String> hello() {
+        return ResponseEntity.ok(helloMessage);
+    }
 
     @PostMapping("/register")
     public ResponseEntity<Map<String, String>> createUser(

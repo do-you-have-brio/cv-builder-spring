@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: auth
+  cloud:
+    config:
+      uri: "configserver:http://localhost:8888"
+      label: main
