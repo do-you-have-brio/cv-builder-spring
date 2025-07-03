@@ -1,0 +1,21 @@
+Microservics:
+  Auth: # vitao
+    sign-up: ok
+    sign-in: ok
+
+  Api: # carlin
+    user: education
+      jobs
+      repositories
+      curriculos
+
+  AI: # isaac
+    create a cv
+
+  Web: # isaac
+    input: job description
+    forms: user crud
+
+Config Server: # juan
+
+Discovery Server: # vitao

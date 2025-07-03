@@ -1,13 +1,66 @@
-services:
-  postgres:
-    image: postgres
-    restart: always
-    ports:
-      - "5432:5432"
-    env_file: .env
-    volumes:
-      - ./postgres:/docker-entrypoint-initdb.d
-      - postgres_data:/var/lib/postgresql/data
+version: "3.9"
 
-volumes:
-  postgres_data:
+services:
+  config-server:
+    build: ./config-server
+    ports:
+      - "8888:8888"
+    environment:
+      - SPRING_PROFILES_ACTIVE=git
+    networks:
+      - backend
+
+  discovery-server:
+    build: ./discovery-server
+    ports:
+      - "8761:8761"
+    depends_on:
+      - config-server
+    networks:
+      - backend
+
+  analyzer-service:
+    build: ./analyzer-service
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_APPLICATION_NAME=analyzer-service
+      - SPRING_CONFIG_IMPORT=configserver:http://config-server:8888
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka/
+    depends_on:
+      - config-server
+      - discovery-server
+    networks:
+      - backend
+
+  generator-service:
+    build: ./generator-service
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_APPLICATION_NAME=generator-service
+      - SPRING_CONFIG_IMPORT=configserver:http://config-server:8888
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka/
+    depends_on:
+      - config-server
+      - discovery-server
+    networks:
+      - backend
+
+  auth-service:
+    build: ./auth-service
+    ports:
+      - "8083:8083"
+    environment:
+      - SPRING_APPLICATION_NAME=auth-service
+      - SPRING_CONFIG_IMPORT=configserver:http://config-server:8888
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-server:8761/eureka/
+    depends_on:
+      - config-server
+      - discovery-server
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
