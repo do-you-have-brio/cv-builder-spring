@@ -3,7 +3,6 @@ import { AuthLayout } from "@/layouts/auth-layout";
 import { RootLayout } from "@/layouts/root-layout";
 import { WithSession } from "@/middlewares/with-session";
 import { ApplicationsPage } from "@/pages/app/applications-page";
-import { HomePage } from "@/pages/app/home-page";
 import { ProfilePage } from "@/pages/app/profile-page";
 import { ResumesPage } from "@/pages/app/resumes-page";
 import { SignInPage } from "@/pages/auth/sign-in-page";
@@ -31,8 +30,7 @@ const privateRoutes: RouteObject[] = [
   {
     element: <AppLayout />,
     children: [
-      { path: "/", element: <Navigate to="/home" />, index: true },
-      { path: "/home", element: <HomePage /> },
+      { path: "/", element: <Navigate to="/resumes" />, index: true },
       { path: "/profile", element: <ProfilePage /> },
       { path: "/resumes", element: <ResumesPage /> },
       { path: "/applications", element: <ApplicationsPage /> },
