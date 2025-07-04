@@ -24,15 +24,6 @@ public class AuthController {
 
     @Autowired
     private final AuthService authService;
-
-    @Value("${hello.message}")
-    private String helloMessage;
-
-    @GetMapping("/hello")
-    public ResponseEntity<String> hello() {
-        return ResponseEntity.ok(helloMessage);
-    }
-
     @PostMapping("/register")
     public ResponseEntity<Map<String, String>> createUser(
         @RequestBody CreateUserDto dto

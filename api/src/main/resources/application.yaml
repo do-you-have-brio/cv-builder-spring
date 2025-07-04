@@ -1,10 +1,9 @@
-auth:
-  jwt:
-    public:
-      key: ${auth.jwt.public-key}
+jwt:
+  public:
+    key: ${auth.jwt.public-key}
 spring:
   application:
-    name: auth-service
+    name: api-service
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5433/cv-builder}
     username: ${SPRING_DATASOURCE_USERNAME:postgres}
@@ -34,3 +33,6 @@ eureka:
   client:
     service-url:
       defaultZone: ${EUREKA_SERVER:http://localhost:8761/eureka}
+
+server:
+  port: 8090
