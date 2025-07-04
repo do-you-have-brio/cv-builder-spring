@@ -30,3 +30,8 @@ spring:
 
   config:
     import: "configserver:http://config-server:8888"
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_SERVER:http://discovery-server:8761/eureka}
