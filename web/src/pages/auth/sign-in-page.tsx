@@ -40,11 +40,15 @@ export const SignInPage = () => {
   });
 
   const handleFormSubmit = async (values: SignInSchema) => {
-    const response = await mutateAsync(values);
-    console.log({ response });
-    if (!response) return;
+    // const response = await mutateAsync(values);
+    // console.log({ response });
+    // if (!response) return;
 
-    setSession(response);
+    // setSession(response);
+    setSession({
+      accessToken: "mock-access-token",
+      expiresIn: 3600,
+    });
     navigate("/", { replace: true });
   };
 

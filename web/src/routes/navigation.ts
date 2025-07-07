@@ -4,7 +4,7 @@ interface RouteNav {
 }
 
 export const ROUTER_NAVIGATION: RouteNav[] = [
-  { label: "My resumes", path: "/resumes" },
-  { label: "My applications", path: "/applications" },
+  { label: "Resumes", path: "/resumes" },
+  { label: "Applications", path: "/applications" },
   { label: "Profile", path: "/profile" },
 ];

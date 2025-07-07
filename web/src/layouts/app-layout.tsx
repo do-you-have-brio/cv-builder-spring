@@ -5,9 +5,9 @@ import { Link, NavLink, Outlet } from "react-router-dom";
 
 export const AppLayout = () => {
   return (
-    <div className="flex-1">
+    <div className="flex flex-1 flex-col">
       <div className="border-b">
-        <header className="mx-auto flex items-center justify-between max-w-3xl px-4 py-2">
+        <header className="mx-auto flex items-center justify-between max-w-3xl px-4 py-2 h-16">
           <Link to="/">
             <h1>CVBuilder</h1>
           </Link>
@@ -34,7 +34,7 @@ export const AppLayout = () => {
         </header>
       </div>
 
-      <div className="mx-auto flex items-center justify-between max-w-3xl px-4 py-2">
+      <div className="mx-auto flex max-w-3xl overflow-auto max-h-[calc(100vh-4rem)] no-scrollbar">
         <Outlet />
       </div>
     </div>

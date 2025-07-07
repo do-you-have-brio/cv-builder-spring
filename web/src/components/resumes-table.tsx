@@ -1,6 +1,12 @@
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   Table,
   TableBody,
@@ -9,168 +15,146 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Download, Search, Trash2 } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Download, MoreHorizontal, Trash2 } from "lucide-react";
 import { useState } from "react";
 
 interface ResumesTableProps {
   resumes: {
-    id: number;
+    id: string;
     name: string;
     createdAt: string;
     type: string;
-    applicationName: string;
+    application: string;
   }[];
 }
 
-export const ResumesTable = ({ resumes }: ResumesTableProps) => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedItems, setSelectedItems] = useState<number[]>([]);
+export const ResumesTable = ({ resumes: data }: ResumesTableProps) => {
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
-  // Filter data based on search term
-  const filteredData = resumes.filter((item) =>
-    item.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  // Handle individual checkbox selection
-  const handleCheckboxChange = (id: number, checked: boolean) => {
-    if (checked) {
-      setSelectedItems([...selectedItems, id]);
-    } else {
-      setSelectedItems(selectedItems.filter((item) => item !== id));
-    }
-  };
-
-  // Handle select all checkbox
   const handleSelectAll = (checked: boolean) => {
     if (checked) {
-      setSelectedItems(filteredData.map((item) => item.id));
+      setSelectedItems(data.map((item) => item.id));
     } else {
       setSelectedItems([]);
     }
   };
 
-  // Check if all items are selected
-  const isAllSelected =
-    filteredData.length > 0 && selectedItems.length === filteredData.length;
-
-  // Handle download action
-  const handleDownload = (id: number, name: string) => {
-    console.log(`Downloading: ${name} (ID: ${id})`);
-    // Implement download logic here
+  const handleSelectItem = (itemId: string, checked: boolean) => {
+    if (checked) {
+      setSelectedItems((prev) => [...prev, itemId]);
+    } else {
+      setSelectedItems((prev) => prev.filter((id) => id !== itemId));
+    }
   };
 
-  // Handle delete action
-  const handleDelete = (id: number, name: string) => {
-    console.log(`Deleting: ${name} (ID: ${id})`);
+  const handleDelete = (itemId: string) => {
+    console.log("Delete item:", itemId);
     // Implement delete logic here
   };
 
-  return (
-    <div className="w-full space-y-4">
-      {/* Search Input */}
-      <div className="flex items-center space-x-2">
-        <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search by name..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-8"
-          />
-        </div>
-      </div>
+  const handleDownload = (itemId: string) => {
+    console.log("Download item:", itemId);
+    // Implement download logic here
+  };
 
-      {/* Data Table */}
+  const handleBulkDelete = () => {
+    console.log("Bulk delete items:", selectedItems);
+    // Implement bulk delete logic here
+    setSelectedItems([]); // Clear selection after action
+  };
+
+  const handleBulkDownload = () => {
+    console.log("Bulk download items:", selectedItems);
+    // Implement bulk download logic here
+  };
+
+  const isAllSelected = selectedItems.length === data.length;
+  const isIndeterminate =
+    selectedItems.length > 0 && selectedItems.length < data.length;
+
+  const hasSelectedItems = selectedItems.length > 0;
+
+  return (
+    <div className={cn("flex-1", { "pb-16": hasSelectedItems })}>
       <div className="rounded-md border">
         <Table>
           <TableHeader>
-            <TableRow>
+            <TableRow className="sticky top-0 z-50">
               <TableHead className="w-12">
                 <Checkbox
                   checked={isAllSelected}
                   onCheckedChange={handleSelectAll}
                   aria-label="Select all"
+                  className="data-[state=indeterminate]:bg-primary data-[state=indeterminate]:text-primary-foreground"
+                  {...(isIndeterminate && { "data-state": "indeterminate" })}
                 />
               </TableHead>
               <TableHead>Name</TableHead>
               <TableHead>Created At</TableHead>
               <TableHead>Type</TableHead>
-              <TableHead>Application Name</TableHead>
-              <TableHead className="text-center">Download</TableHead>
-              <TableHead className="text-center">Delete</TableHead>
+              <TableHead>Application</TableHead>
+              <TableHead className="w-12">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredData.length === 0 ? (
-              <TableRow>
-                <TableCell
-                  colSpan={7}
-                  className="text-center py-8 text-muted-foreground"
-                >
-                  {searchTerm ? "No results found." : "No data available."}
+            {data.map((item) => (
+              <TableRow key={item.id}>
+                <TableCell>
+                  <Checkbox
+                    checked={selectedItems.includes(item.id)}
+                    onCheckedChange={(checked) =>
+                      handleSelectItem(item.id, checked as boolean)
+                    }
+                    aria-label={`Select ${item.name}`}
+                  />
+                </TableCell>
+                <TableCell className="font-medium">{item.name}</TableCell>
+                <TableCell>{item.createdAt}</TableCell>
+                <TableCell>
+                  <Badge variant="secondary">{item.type}</Badge>
+                </TableCell>
+                <TableCell>{item.application}</TableCell>
+                <TableCell>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" className="h-8 w-8 p-0">
+                        <span className="sr-only">Open menu</span>
+                        <MoreHorizontal className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={() => handleDownload(item.id)}>
+                        <Download className="mr-2 h-4 w-4" />
+                        Download
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => handleDelete(item.id)}
+                        className="text-destructive"
+                      >
+                        <Trash2 className="mr-2 h-4 w-4" />
+                        Delete
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </TableCell>
               </TableRow>
-            ) : (
-              filteredData.map((item) => (
-                <TableRow key={item.id}>
-                  <TableCell>
-                    <Checkbox
-                      checked={selectedItems.includes(item.id)}
-                      onCheckedChange={(checked) =>
-                        handleCheckboxChange(item.id, checked as boolean)
-                      }
-                      aria-label={`Select ${item.name}`}
-                    />
-                  </TableCell>
-                  <TableCell className="font-medium">{item.name}</TableCell>
-                  <TableCell>{item.createdAt}</TableCell>
-                  <TableCell>
-                    <span className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300">
-                      {item.type}
-                    </span>
-                  </TableCell>
-                  <TableCell>{item.applicationName}</TableCell>
-                  <TableCell className="text-center">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleDownload(item.id, item.name)}
-                      className="h-8 w-8 p-0"
-                    >
-                      <Download className="h-4 w-4" />
-                      <span className="sr-only">Download {item.name}</span>
-                    </Button>
-                  </TableCell>
-                  <TableCell className="text-center">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleDelete(item.id, item.name)}
-                      className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                      <span className="sr-only">Delete {item.name}</span>
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))
-            )}
+            ))}
           </TableBody>
         </Table>
       </div>
 
-      {/* Selected Items Info */}
-      {selectedItems.length > 0 && (
-        <div className="flex items-center justify-between p-4 bg-muted rounded-md">
+      {hasSelectedItems && (
+        <div className="flex items-center justify-between p-4 bg-muted rounded-md flex-wrap fixed bottom-0 inset-x-0 z-50 mx-auto max-w-3xl">
           <span className="text-sm text-muted-foreground">
             {selectedItems.length} item{selectedItems.length !== 1 ? "s" : ""}{" "}
             selected
           </span>
           <div className="space-x-2">
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" onClick={handleBulkDownload}>
               Bulk Download
             </Button>
-            <Button variant="destructive" size="sm">
+            <Button variant="destructive" size="sm" onClick={handleBulkDelete}>
               Bulk Delete
             </Button>
           </div>
