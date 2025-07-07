@@ -7,6 +7,8 @@ import java.util.List;
 
 @Data
 public class CreateResumeDTO {
+    private ProfileDTO profile;
+
     private String applicationDescription;
 
     private List<EducationDTO> education;
