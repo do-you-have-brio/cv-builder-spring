@@ -1,3 +1,4 @@
+import { signUpSchema, type SignUpSchema } from "@/@types/schemas/auth";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -16,13 +17,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input, SecureInput } from "@/components/ui/input";
-import { signUpSchema, type SignUpSchema } from "@/schemas/auth-schema";
+import { useSignUp } from "@/hooks/auth/use-sign-up";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { LoaderCircleIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 
 export const SignUpPage = () => {
   const navigate = useNavigate();
+  const { isPending, mutateAsync } = useSignUp();
 
   const form = useForm<SignUpSchema>({
     resolver: zodResolver(signUpSchema),
@@ -33,8 +36,11 @@ export const SignUpPage = () => {
     },
   });
 
-  const handleFormSubmit = (values: SignUpSchema) => {
-    console.log({ values });
+  const handleFormSubmit = async (values: SignUpSchema) => {
+    const response = await mutateAsync(values);
+    console.log({ response });
+    if (!response) return;
+    
     navigate("/auth/sign-in", {
       state: { email: values.email },
       replace: true,
@@ -113,8 +119,9 @@ export const SignUpPage = () => {
               )}
             />
 
-            <Button type="submit" className="w-full">
-              Sign Up
+            <Button disabled={isPending} type="submit" className="w-full">
+              {isPending && <LoaderCircleIcon className="animate-spin" />}
+              <>Sign Up</>
             </Button>
           </form>
         </Form>

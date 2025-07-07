@@ -1,19 +1,20 @@
+import type { SessionSchema } from "@/@types/schemas/auth";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
 export interface AuthStore {
-  session: boolean;
-  setSession: (session: boolean) => void;
+  session: SessionSchema | null;
+  setSession: (session: SessionSchema | null) => void;
   clearSession: () => void;
 }
 
 export const useAuthStore = create<AuthStore>()(
   persist(
     (set) => ({
-      session: false,
+      session: null,
 
-      setSession: (session: boolean) => set(() => ({ session })),
-      clearSession: () => set(() => ({ session: false })),
+      setSession: (session: SessionSchema | null) => set(() => ({ session })),
+      clearSession: () => set(() => ({ session: null })),
     }),
     {
       name: "@cv-builder::auth",

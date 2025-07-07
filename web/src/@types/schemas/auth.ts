@@ -8,6 +8,12 @@ export const signInSchema = z.object({
 });
 export type SignInSchema = z.infer<typeof signInSchema>;
 
+export const sessionSchema = z.object({
+  accessToken: z.string(),
+  expiresIn: z.number(),
+});
+export type SessionSchema = z.infer<typeof sessionSchema>;
+
 export const signUpSchema = z
   .object({
     name: z.string().min(1, { message: "O nome é obrigatório" }),
@@ -23,3 +29,8 @@ export const signUpSchema = z
     message: "As senhas não coincidem",
   });
 export type SignUpSchema = z.infer<typeof signUpSchema>;
+
+export const signUpResponseSchema = z.object({
+  message: z.string(),
+});
+export type SignUpResponseSchema = z.infer<typeof signUpResponseSchema>;

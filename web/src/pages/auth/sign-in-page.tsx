@@ -1,3 +1,4 @@
+import { signInSchema, type SignInSchema } from "@/@types/schemas/auth";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -16,14 +17,16 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input, SecureInput } from "@/components/ui/input";
-import { signInSchema, type SignInSchema } from "@/schemas/auth-schema";
+import { useSignIn } from "@/hooks/auth/use-sign-in";
 import { useAuthStore } from "@/stores/auth-store";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { LoaderCircleIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 export const SignInPage = () => {
   const { setSession } = useAuthStore();
+  const { isPending, mutateAsync } = useSignIn();
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -36,9 +39,12 @@ export const SignInPage = () => {
     },
   });
 
-  const handleFormSubmit = (values: SignInSchema) => {
-    console.log({ values });
-    setSession(true);
+  const handleFormSubmit = async (values: SignInSchema) => {
+    const response = await mutateAsync(values);
+    console.log({ response });
+    if (!response) return;
+
+    setSession(response);
     navigate("/", { replace: true });
   };
 
@@ -90,8 +96,9 @@ export const SignInPage = () => {
               )}
             />
 
-            <Button type="submit" className="w-full">
-              Sign In
+            <Button disabled={isPending} type="submit" className="w-full">
+              {isPending && <LoaderCircleIcon className="animate-spin" />}
+              <>Sign In</>
             </Button>
           </form>
         </Form>
