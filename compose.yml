@@ -32,6 +32,15 @@ services:
     ports:
       - "8080:8080"
 
+  api-service:
+    build:
+      context: ./api
+    depends_on:
+      - discovery-server
+      - config-server
+    ports:
+      - "8090:8090"
+
 volumes:
   postgres_data:
 
