@@ -29,6 +29,17 @@ spring:
   profiles:
     active: dev
 
+  cloud:
+    config:
+      uri: http://config-server:8888
+      fail-fast: true
+      retry:
+        enabled: true
+        max-attempts: 20 # Tente 20 vezes
+        initial-interval: 2000 # Comece esperando 2 segundos
+        max-interval: 10000 # Espera máxima entre tentativas
+        multiplier: 1.5 # Aumenta a cada tentativa
+
   config:
     # import: "configserver:http://localhost:8888"
     import: "configserver:http://config-server:8888"
