@@ -13,7 +13,7 @@ FROM openjdk:24-jdk-slim AS prod
 
 WORKDIR /app
 
-COPY --from=builder /app/target/auth-*.jar app.jar
+COPY --from=builder /app/target/*.jar app.jar
 
 EXPOSE 8080
 
