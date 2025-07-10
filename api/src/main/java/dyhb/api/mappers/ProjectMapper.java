@@ -21,7 +21,5 @@ public interface ProjectMapper {
         : dtos.stream().map(dto -> fromCreateDtoToModel(dto, userId)).collect(Collectors.toList());
   }
 
-  @Mapping(target = "id", ignore = true)
-  @Mapping(target = "userId", ignore = true)
   ProjectModel updateModelFromDto(ProjectUpsertDto dto, @MappingTarget ProjectModel model);
 }

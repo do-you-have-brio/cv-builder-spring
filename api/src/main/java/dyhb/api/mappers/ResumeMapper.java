@@ -21,7 +21,5 @@ public interface ResumeMapper {
         : dtos.stream().map(dto -> fromCreateDtoToModel(dto, userId)).collect(Collectors.toList());
   }
 
-  @Mapping(target = "id", ignore = true)
-  @Mapping(target = "userId", ignore = true)
   ResumeModel updateModelFromDto(ResumeUpsertDto dto, @MappingTarget ResumeModel model);
 }

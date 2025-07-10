@@ -15,13 +15,12 @@ public interface EmploymentMapper {
 
   EmploymentModel fromCreateDtoToModel(EmploymentUpsertDto dto, UUID userId);
 
-  default List<EmploymentModel> fromCreateDtosToModels(List<EmploymentUpsertDto> dtos, UUID userId) {
+  default List<EmploymentModel> fromCreateDtosToModels(
+      List<EmploymentUpsertDto> dtos, UUID userId) {
     return dtos == null
         ? List.of()
         : dtos.stream().map(dto -> fromCreateDtoToModel(dto, userId)).collect(Collectors.toList());
   }
 
-  @Mapping(target = "id", ignore = true)
-  @Mapping(target = "userId", ignore = true)
   EmploymentModel updateModelFromDto(EmploymentUpsertDto dto, @MappingTarget EmploymentModel model);
 }

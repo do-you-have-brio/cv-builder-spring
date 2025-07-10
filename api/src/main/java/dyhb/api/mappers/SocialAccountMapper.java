@@ -22,8 +22,6 @@ public interface SocialAccountMapper {
         : dtos.stream().map(dto -> fromCreateDtoToModel(dto, userId)).collect(Collectors.toList());
   }
 
-  @Mapping(target = "id", ignore = true)
-  @Mapping(target = "userId", ignore = true)
   SocialAccountModel updateModelFromDto(
       SocialAccountUpsertDto dto, @MappingTarget SocialAccountModel model);
 }

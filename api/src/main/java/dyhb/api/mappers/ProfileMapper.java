@@ -14,7 +14,5 @@ public interface ProfileMapper {
 
   ProfileModel fromCreateDtoToModel(ProfileUpsertDto dto, UUID userId);
 
-  @Mapping(target = "id", ignore = true)
-  @Mapping(target = "userId", ignore = true)
   ProfileModel updateModelFromDto(ProfileUpsertDto dto, @MappingTarget ProfileModel model);
 }

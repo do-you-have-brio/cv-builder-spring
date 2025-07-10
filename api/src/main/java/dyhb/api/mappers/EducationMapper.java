@@ -21,7 +21,5 @@ public interface EducationMapper {
         : dtos.stream().map(dto -> fromCreateDtoToModel(dto, userId)).collect(Collectors.toList());
   }
 
-  @Mapping(target = "id", ignore = true)
-  @Mapping(target = "userId", ignore = true)
   EducationModel updateModelFromDto(EducationUpsertDto dto, @MappingTarget EducationModel model);
 }
