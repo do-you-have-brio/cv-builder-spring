@@ -1,31 +1,32 @@
 package dyhb.api.database.repository;
 
-import dyhb.api.database.models.JobModel;
+import dyhb.api.database.models.EmploymentModel;
+
 import java.util.*;
-import dyhb.api.database.repository.jpa.JobJpaRepository;
+import dyhb.api.database.repository.jpa.EmploymentJpaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class JobRepository {
+public class EmploymentRepository {
 
-  @Autowired private final JobJpaRepository jpaRepository;
+  @Autowired private final EmploymentJpaRepository jpaRepository;
 
-  public Optional<JobModel> findById(UUID id) {
+  public Optional<EmploymentModel> findById(UUID id) {
     return jpaRepository.findById(id);
   }
 
-  public List<JobModel> findByUserId(UUID userId) {
+  public List<EmploymentModel> findByUserId(UUID userId) {
     return jpaRepository.findByUserId(userId);
   }
 
-  public JobModel save(JobModel model) {
+  public EmploymentModel save(EmploymentModel model) {
     return jpaRepository.save(model);
   }
 
-  public List<JobModel> saveAll(List<JobModel> models) {
+  public List<EmploymentModel> saveAll(List<EmploymentModel> models) {
     return jpaRepository.saveAll(models);
   }
 

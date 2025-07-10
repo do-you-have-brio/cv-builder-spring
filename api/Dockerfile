@@ -17,4 +17,7 @@ COPY --from=builder /app/target/*.jar app.jar
 
 EXPOSE 8090
 
-CMD ["java", "-jar", "app.jar"]
+ENV SPRING_PROFILES_ACTIVE=prod
+
+
+CMD ["java", "-jar", "app.jar", "--spring.profiles.active=${SPRING_PROFILES_ACTIVE}"]

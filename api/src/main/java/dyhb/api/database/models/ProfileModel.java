@@ -4,16 +4,13 @@ import dyhb.api.database.models.base.BaseModel;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
-
 @Data
 @Entity
-@Table(name = "projects")
+@Table(name = "profiles")
 @EqualsAndHashCode(callSuper = true)
-public class ProjectModel extends BaseModel {
+public class ProfileModel extends BaseModel {
   private String name;
-  private String description;
-  private List<String> topics;
-  private String url;
-  private String website;
+
+  @Column(name = "avatar_url")
+  private String avatarUrl;
 }

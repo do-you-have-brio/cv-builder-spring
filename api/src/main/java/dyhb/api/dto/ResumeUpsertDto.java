@@ -6,5 +6,5 @@ import lombok.*;
 @Builder(toBuilder = true)
 public class ResumeUpsertDto {
   private String name;
-  private String link;
+  private String url;
 }

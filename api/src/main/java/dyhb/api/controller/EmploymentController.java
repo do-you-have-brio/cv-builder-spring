@@ -1,9 +1,9 @@
 package dyhb.api.controller;
 
-import dyhb.api.database.repository.JobRepository;
-import dyhb.api.dto.JobUpsertDto;
-import dyhb.api.database.models.JobModel;
-import dyhb.api.mappers.JobMapper;
+import dyhb.api.database.models.EmploymentModel;
+import dyhb.api.database.repository.EmploymentRepository;
+import dyhb.api.dto.EmploymentUpsertDto;
+import dyhb.api.mappers.EmploymentMapper;
 import lombok.AllArgsConstructor;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,16 +12,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
-@RequestMapping("/api/job")
+@RequestMapping("/api/employment")
 @AllArgsConstructor
-public class JobController {
+public class EmploymentController {
 
-  @Autowired private final JobRepository repository;
+  @Autowired private final EmploymentRepository repository;
 
-  private final JobMapper mapper = Mappers.getMapper(JobMapper.class);
+  private final EmploymentMapper mapper = Mappers.getMapper(EmploymentMapper.class);
 
   @GetMapping("/{id}")
-  public ResponseEntity<JobModel> findById(@PathVariable UUID id) {
+  public ResponseEntity<EmploymentModel> findById(@PathVariable UUID id) {
     return repository
         .findById(id)
         .map(ResponseEntity::ok)
@@ -29,14 +29,16 @@ public class JobController {
   }
 
   @GetMapping("/user/{userId}")
-  public ResponseEntity<List<JobModel>> findByUserId(@PathVariable UUID userId) {
-    List<JobModel> jobs = repository.findByUserId(userId);
-    return !jobs.isEmpty() ? ResponseEntity.ok(jobs) : ResponseEntity.noContent().build();
+  public ResponseEntity<List<EmploymentModel>> findByUserId(@PathVariable UUID userId) {
+    List<EmploymentModel> employments = repository.findByUserId(userId);
+    return !employments.isEmpty()
+        ? ResponseEntity.ok(employments)
+        : ResponseEntity.noContent().build();
   }
 
   @PostMapping("/user/{userId}")
-  public ResponseEntity<List<JobModel>> saveAll(
-      @RequestBody List<JobUpsertDto> dtos, @PathVariable UUID userId) {
+  public ResponseEntity<List<EmploymentModel>> saveAll(
+      @RequestBody List<EmploymentUpsertDto> dtos, @PathVariable UUID userId) {
     var models = mapper.fromCreateDtosToModels(dtos, userId);
     var result = repository.saveAll(models);
     return result != null
@@ -45,7 +47,8 @@ public class JobController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<JobModel> update(@PathVariable UUID id, @RequestBody JobUpsertDto dto) {
+  public ResponseEntity<EmploymentModel> update(
+      @PathVariable UUID id, @RequestBody EmploymentUpsertDto dto) {
     return repository
         .findById(id)
         .map(

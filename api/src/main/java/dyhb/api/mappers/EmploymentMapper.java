@@ -1,7 +1,7 @@
 package dyhb.api.mappers;
 
-import dyhb.api.database.models.JobModel;
-import dyhb.api.dto.JobUpsertDto;
+import dyhb.api.database.models.EmploymentModel;
+import dyhb.api.dto.EmploymentUpsertDto;
 import java.util.*;
 import java.util.stream.Collectors;
 import org.mapstruct.*;
@@ -10,12 +10,12 @@ import org.mapstruct.factory.Mappers;
 @Mapper(
     nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
     unmappedTargetPolicy = ReportingPolicy.IGNORE)
-public interface JobMapper {
-  JobMapper INSTANCE = Mappers.getMapper(JobMapper.class);
+public interface EmploymentMapper {
+  EmploymentMapper INSTANCE = Mappers.getMapper(EmploymentMapper.class);
 
-  JobModel fromCreateDtoToModel(JobUpsertDto dto, UUID userId);
+  EmploymentModel fromCreateDtoToModel(EmploymentUpsertDto dto, UUID userId);
 
-  default List<JobModel> fromCreateDtosToModels(List<JobUpsertDto> dtos, UUID userId) {
+  default List<EmploymentModel> fromCreateDtosToModels(List<EmploymentUpsertDto> dtos, UUID userId) {
     return dtos == null
         ? List.of()
         : dtos.stream().map(dto -> fromCreateDtoToModel(dto, userId)).collect(Collectors.toList());
@@ -23,5 +23,5 @@ public interface JobMapper {
 
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "userId", ignore = true)
-  JobModel updateModelFromDto(JobUpsertDto dto, @MappingTarget JobModel model);
+  EmploymentModel updateModelFromDto(EmploymentUpsertDto dto, @MappingTarget EmploymentModel model);
 }
