@@ -12,8 +12,13 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = true)
 public class EducationModel extends BaseModel {
   private String name;
+
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false)
   private EducationDegree degree;
+
   private String institution;
+
   private String description;
 
   @Column(name = "start_date")

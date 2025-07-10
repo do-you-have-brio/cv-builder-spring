@@ -6,7 +6,7 @@ import lombok.*;
 
 @Data
 @Entity
-@Table(name = "profiles")
+@Table(name = "profiles", uniqueConstraints = @UniqueConstraint(columnNames = "user_id"))
 @EqualsAndHashCode(callSuper = true)
 public class ProfileModel extends BaseModel {
   private String name;

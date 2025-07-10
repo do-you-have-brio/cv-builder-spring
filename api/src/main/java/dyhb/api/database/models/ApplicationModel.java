@@ -11,6 +11,7 @@ import lombok.*;
 @EqualsAndHashCode(callSuper = true)
 public class ApplicationModel extends BaseModel {
   private String title;
+
   private String description;
 
   // if resume is not present, status is PENDING, otherwise it is CREATED

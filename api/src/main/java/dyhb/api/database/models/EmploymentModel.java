@@ -10,12 +10,17 @@ import java.util.*;
 @Entity
 @Table(name = "employments")
 @EqualsAndHashCode(callSuper = true)
-public class EmploymentModel extends BaseModel { // @todo: rename to employment
+public class EmploymentModel extends BaseModel {
   private String title;
+
   private String company;
+
   private String location;
+
   private EmploymentType type;
+
   private List<String> skills;
+
   private String description;
 
   @Column(name = "start_date")

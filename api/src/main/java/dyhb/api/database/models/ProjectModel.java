@@ -12,8 +12,12 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class ProjectModel extends BaseModel {
   private String name;
+
   private String description;
+
   private List<String> topics;
+
   private String url;
+
   private String website;
 }

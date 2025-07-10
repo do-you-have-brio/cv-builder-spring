@@ -10,5 +10,6 @@ import lombok.*;
 @EqualsAndHashCode(callSuper = true)
 public class ResumeModel extends BaseModel {
   private String name;
+  
   private String url;
 }

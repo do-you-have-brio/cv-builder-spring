@@ -7,9 +7,15 @@ import lombok.*;
 
 @Data
 @Entity
-@Table(name = "social_accounts")
+@Table(
+    name = "social_accounts",
+    uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "type"}))
 @EqualsAndHashCode(callSuper = true)
 public class SocialAccount extends BaseModel {
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false)
   private SocialAccountType type;
+
+  @Column(nullable = false)
   private String url;
 }
