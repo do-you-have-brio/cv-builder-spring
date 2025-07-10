@@ -1,4 +1,4 @@
-package dyhb.api.database.repository;
+package dyhb.api.service;
 
 import dyhb.api.database.models.SocialAccountModel;
 import dyhb.api.database.repository.jpa.SocialAccountJpaRepository;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class SocialAccountRepository {
+public class SocialAccountService {
 
   @Autowired private final SocialAccountJpaRepository jpaRepository;
 

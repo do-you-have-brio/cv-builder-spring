@@ -1,4 +1,4 @@
-package dyhb.api.database.repository;
+package dyhb.api.service;
 
 import dyhb.api.database.models.ProjectModel;
 import java.util.*;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class ProjectRepository {
+public class ProjectService {
 
   @Autowired private final ProjectJpaRepository jpaRepository;
 

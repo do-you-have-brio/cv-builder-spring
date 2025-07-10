@@ -1,6 +1,6 @@
 package dyhb.api.controller;
 
-import dyhb.api.database.repository.ProjectRepository;
+import dyhb.api.service.ProjectService;
 import dyhb.api.dto.ProjectUpsertDto;
 import dyhb.api.database.models.ProjectModel;
 import dyhb.api.mappers.ProjectMapper;
@@ -17,13 +17,13 @@ import java.util.*;
 @AllArgsConstructor
 public class ProjectsController {
 
-  @Autowired private final ProjectRepository repository;
+  @Autowired private final ProjectService service;
 
   private final ProjectMapper mapper = Mappers.getMapper(ProjectMapper.class);
 
   @GetMapping("/{id}")
   public ResponseEntity<ProjectModel> findById(@PathVariable UUID id) {
-    return repository
+    return service
         .findById(id)
         .map(ResponseEntity::ok)
         .orElse(ResponseEntity.notFound().build());
@@ -31,7 +31,7 @@ public class ProjectsController {
 
   @GetMapping("/user/{userId}")
   public ResponseEntity<List<ProjectModel>> findByUserId(@PathVariable UUID userId) {
-    List<ProjectModel> projects = repository.findByUserId(userId);
+    List<ProjectModel> projects = service.findByUserId(userId);
     return !projects.isEmpty() ? ResponseEntity.ok(projects) : ResponseEntity.noContent().build();
   }
 
@@ -39,7 +39,7 @@ public class ProjectsController {
   public ResponseEntity<List<ProjectModel>> saveAll(
       @RequestBody List<ProjectUpsertDto> dtos, @PathVariable UUID userId) {
     var models = mapper.fromCreateDtosToModels(dtos, userId);
-    var result = repository.saveAll(models);
+    var result = service.saveAll(models);
     return result != null
         ? ResponseEntity.status(201).body(result)
         : ResponseEntity.badRequest().build();
@@ -48,19 +48,19 @@ public class ProjectsController {
   @PutMapping("/{id}")
   public ResponseEntity<ProjectModel> update(
       @PathVariable UUID id, @RequestBody ProjectUpsertDto dto) {
-    return repository
+    return service
         .findById(id)
         .map(
             existingModel -> {
               mapper.updateModelFromDto(dto, existingModel);
-              return ResponseEntity.ok(repository.save(existingModel));
+              return ResponseEntity.ok(service.save(existingModel));
             })
         .orElse(ResponseEntity.notFound().build());
   }
 
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> delete(@PathVariable UUID id) {
-    boolean deleted = repository.delete(id);
+    boolean deleted = service.delete(id);
     return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
   }
 }

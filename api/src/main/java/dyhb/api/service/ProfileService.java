@@ -1,4 +1,4 @@
-package dyhb.api.database.repository;
+package dyhb.api.service;
 
 import dyhb.api.database.models.ProfileModel;
 import dyhb.api.database.repository.jpa.ProfileJpaRepository;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class ProfileRepository {
+public class ProfileService {
 
   @Autowired private final ProfileJpaRepository jpaRepository;
 

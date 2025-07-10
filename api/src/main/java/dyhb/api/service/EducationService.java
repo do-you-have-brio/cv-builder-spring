@@ -1,31 +1,31 @@
-package dyhb.api.database.repository;
+package dyhb.api.service;
 
-import dyhb.api.database.models.ResumeModel;
+import dyhb.api.database.models.EducationModel;
 import java.util.*;
-import dyhb.api.database.repository.jpa.ResumeJpaRepository;
+import dyhb.api.database.repository.jpa.EducationJpaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class ResumeRepository {
+public class EducationService {
 
-  @Autowired private final ResumeJpaRepository jpaRepository;
+  @Autowired private final EducationJpaRepository jpaRepository;
 
-  public Optional<ResumeModel> findById(UUID id) {
+  public Optional<EducationModel> findById(UUID id) {
     return jpaRepository.findById(id);
   }
 
-  public List<ResumeModel> findByUserId(UUID userId) {
+  public List<EducationModel> findByUserId(UUID userId) {
     return jpaRepository.findByUserId(userId);
   }
 
-  public ResumeModel save(ResumeModel model) {
+  public EducationModel save(EducationModel model) {
     return jpaRepository.save(model);
   }
 
-  public List<ResumeModel> saveAll(List<ResumeModel> models) {
+  public List<EducationModel> saveAll(List<EducationModel> models) {
     return jpaRepository.saveAll(models);
   }
 

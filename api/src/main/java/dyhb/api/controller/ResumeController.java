@@ -1,6 +1,6 @@
 package dyhb.api.controller;
 
-import dyhb.api.database.repository.ResumeRepository;
+import dyhb.api.service.ResumeService;
 import dyhb.api.dto.ResumeUpsertDto;
 import dyhb.api.database.models.ResumeModel;
 import dyhb.api.mappers.ResumeMapper;
@@ -16,13 +16,13 @@ import java.util.*;
 @AllArgsConstructor
 public class ResumeController {
 
-  @Autowired private final ResumeRepository repository;
+  @Autowired private final ResumeService service;
 
   private final ResumeMapper mapper = Mappers.getMapper(ResumeMapper.class);
 
   @GetMapping("/{id}")
   public ResponseEntity<ResumeModel> findById(@PathVariable UUID id) {
-    return repository
+    return service
         .findById(id)
         .map(ResponseEntity::ok)
         .orElse(ResponseEntity.notFound().build());
@@ -30,7 +30,7 @@ public class ResumeController {
 
   @GetMapping("/user/{userId}")
   public ResponseEntity<List<ResumeModel>> findByUserId(@PathVariable UUID userId) {
-    List<ResumeModel> resumes = repository.findByUserId(userId);
+    List<ResumeModel> resumes = service.findByUserId(userId);
     return !resumes.isEmpty() ? ResponseEntity.ok(resumes) : ResponseEntity.noContent().build();
   }
 
@@ -38,7 +38,7 @@ public class ResumeController {
   public ResponseEntity<List<ResumeModel>> saveAll(
       @RequestBody List<ResumeUpsertDto> dtos, @PathVariable UUID userId) {
     var models = mapper.fromCreateDtosToModels(dtos, userId);
-    var result = repository.saveAll(models);
+    var result = service.saveAll(models);
     return result != null
         ? ResponseEntity.status(201).body(result)
         : ResponseEntity.badRequest().build();
@@ -47,19 +47,19 @@ public class ResumeController {
   @PutMapping("/{id}")
   public ResponseEntity<ResumeModel> update(
       @PathVariable UUID id, @RequestBody ResumeUpsertDto dto) {
-    return repository
+    return service
         .findById(id)
         .map(
             existingModel -> {
               mapper.updateModelFromDto(dto, existingModel);
-              return ResponseEntity.ok(repository.save(existingModel));
+              return ResponseEntity.ok(service.save(existingModel));
             })
         .orElse(ResponseEntity.notFound().build());
   }
 
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> delete(@PathVariable UUID id) {
-    boolean deleted = repository.delete(id);
+    boolean deleted = service.delete(id);
     return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
   }
 }

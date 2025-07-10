@@ -1,7 +1,7 @@
 package dyhb.api.controller;
 
 import dyhb.api.database.models.SocialAccountModel;
-import dyhb.api.database.repository.SocialAccountRepository;
+import dyhb.api.service.SocialAccountService;
 import dyhb.api.dto.SocialAccountUpsertDto;
 import dyhb.api.mappers.SocialAccountMapper;
 import java.util.*;
@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class SocialAccountController {
 
-  @Autowired private SocialAccountRepository repository;
+  @Autowired private SocialAccountService service;
 
   private final SocialAccountMapper mapper = Mappers.getMapper(SocialAccountMapper.class);
 
   @GetMapping("/{id}")
   public ResponseEntity<SocialAccountModel> findById(@PathVariable UUID id) {
-    return repository
+    return service
         .findById(id)
         .map(ResponseEntity::ok)
         .orElse(ResponseEntity.notFound().build());
@@ -30,7 +30,7 @@ public class SocialAccountController {
 
   @GetMapping("/user/{userId}")
   public ResponseEntity<List<SocialAccountModel>> findByUserId(@PathVariable UUID userId) {
-    List<SocialAccountModel> socialAccounts = repository.findByUserId(userId);
+    List<SocialAccountModel> socialAccounts = service.findByUserId(userId);
     return !socialAccounts.isEmpty()
         ? ResponseEntity.ok(socialAccounts)
         : ResponseEntity.noContent().build();
@@ -40,7 +40,7 @@ public class SocialAccountController {
   public ResponseEntity<List<SocialAccountModel>> saveAll(
       @RequestBody List<SocialAccountUpsertDto> dtos, @PathVariable UUID userId) {
     var models = mapper.fromCreateDtosToModels(dtos, userId);
-    var result = repository.saveAll(models);
+    var result = service.saveAll(models);
     return result != null
         ? ResponseEntity.status(201).body(result)
         : ResponseEntity.badRequest().build();
@@ -49,19 +49,19 @@ public class SocialAccountController {
   @PutMapping("/{id}")
   public ResponseEntity<SocialAccountModel> update(
       @PathVariable UUID id, @RequestBody SocialAccountUpsertDto dto) {
-    return repository
+    return service
         .findById(id)
         .map(
             existingModel -> {
               mapper.updateModelFromDto(dto, existingModel);
-              return ResponseEntity.ok(repository.save(existingModel));
+              return ResponseEntity.ok(service.save(existingModel));
             })
         .orElse(ResponseEntity.notFound().build());
   }
 
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> delete(@PathVariable UUID id) {
-    boolean deleted = repository.delete(id);
+    boolean deleted = service.delete(id);
     return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
   }
 }

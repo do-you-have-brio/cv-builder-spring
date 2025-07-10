@@ -1,4 +1,4 @@
-package dyhb.api.database.repository;
+package dyhb.api.service;
 
 import dyhb.api.database.models.EmploymentModel;
 
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class EmploymentRepository {
+public class EmploymentService {
 
   @Autowired private final EmploymentJpaRepository jpaRepository;
 
