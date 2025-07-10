@@ -9,9 +9,9 @@ import lombok.*;
 @Entity
 @Table(
     name = "social_accounts",
-    uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "type"}))
+    uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "social_account_type"}))
 @EqualsAndHashCode(callSuper = true)
-public class SocialAccount extends BaseModel {
+public class SocialAccountModel extends BaseModel {
   @Enumerated(EnumType.STRING)
   @Column(name = "social_account_type", nullable = false)
   private SocialAccountType socialAccountType;
