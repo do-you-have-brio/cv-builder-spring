@@ -24,23 +24,22 @@ public class ProjectsController {
   @GetMapping("/{id}")
   public ResponseEntity<ProjectModel> findById(@PathVariable UUID id) {
     return repository
-            .findById(id)
-            .map(ResponseEntity::ok)
-            .orElse(ResponseEntity.notFound().build());
+        .findById(id)
+        .map(ResponseEntity::ok)
+        .orElse(ResponseEntity.notFound().build());
   }
 
-  @GetMapping("/{userId}")
+  @GetMapping("/user/{userId}")
   public ResponseEntity<List<ProjectModel>> findByUserId(@PathVariable UUID userId) {
     List<ProjectModel> projects = repository.findByUserId(userId);
     return !projects.isEmpty() ? ResponseEntity.ok(projects) : ResponseEntity.noContent().build();
   }
 
-  @PostMapping("/{userId}")
-  public ResponseEntity<ProjectModel> save(
-      @RequestBody ProjectUpsertDto dto, @PathVariable UUID userId) {
-    var model = mapper.fromCreateDtoToModel(dto, userId);
-
-    var result = repository.save(model);
+  @PostMapping("/user/{userId}")
+  public ResponseEntity<List<ProjectModel>> saveAll(
+      @RequestBody List<ProjectUpsertDto> dtos, @PathVariable UUID userId) {
+    var models = mapper.fromCreateDtosToModels(dtos, userId);
+    var result = repository.saveAll(models);
     return result != null
         ? ResponseEntity.status(201).body(result)
         : ResponseEntity.badRequest().build();

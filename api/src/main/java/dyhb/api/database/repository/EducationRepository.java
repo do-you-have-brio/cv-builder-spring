@@ -2,7 +2,6 @@ package dyhb.api.database.repository;
 
 import dyhb.api.database.models.EducationModel;
 import java.util.*;
-
 import dyhb.api.database.repository.jpa.EducationJpaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +23,10 @@ public class EducationRepository {
 
   public EducationModel save(EducationModel model) {
     return jpaRepository.save(model);
+  }
+
+  public List<EducationModel> saveAll(List<EducationModel> models) {
+    return jpaRepository.saveAll(models);
   }
 
   public boolean delete(UUID id) {

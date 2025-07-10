@@ -2,7 +2,6 @@ package dyhb.api.database.repository;
 
 import dyhb.api.database.models.JobModel;
 import java.util.*;
-
 import dyhb.api.database.repository.jpa.JobJpaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +23,10 @@ public class JobRepository {
 
   public JobModel save(JobModel model) {
     return jpaRepository.save(model);
+  }
+
+  public List<JobModel> saveAll(List<JobModel> models) {
+    return jpaRepository.saveAll(models);
   }
 
   public boolean delete(UUID id) {

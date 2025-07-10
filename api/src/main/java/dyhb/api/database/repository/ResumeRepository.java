@@ -2,7 +2,6 @@ package dyhb.api.database.repository;
 
 import dyhb.api.database.models.ResumeModel;
 import java.util.*;
-
 import dyhb.api.database.repository.jpa.ResumeJpaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +23,10 @@ public class ResumeRepository {
 
   public ResumeModel save(ResumeModel model) {
     return jpaRepository.save(model);
+  }
+
+  public List<ResumeModel> saveAll(List<ResumeModel> models) {
+    return jpaRepository.saveAll(models);
   }
 
   public boolean delete(UUID id) {

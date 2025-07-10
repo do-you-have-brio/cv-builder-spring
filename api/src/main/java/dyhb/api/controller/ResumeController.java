@@ -9,7 +9,6 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.*;
 
 @RestController
@@ -29,18 +28,17 @@ public class ResumeController {
         .orElse(ResponseEntity.notFound().build());
   }
 
-  @GetMapping("/{userId}")
+  @GetMapping("/user/{userId}")
   public ResponseEntity<List<ResumeModel>> findByUserId(@PathVariable UUID userId) {
     List<ResumeModel> resumes = repository.findByUserId(userId);
     return !resumes.isEmpty() ? ResponseEntity.ok(resumes) : ResponseEntity.noContent().build();
   }
 
-  @PostMapping("/{userId}")
-  public ResponseEntity<ResumeModel> save(
-      @RequestBody ResumeUpsertDto dto, @PathVariable UUID userId) {
-    var model = mapper.fromCreateDtoToModel(dto, userId);
-
-    var result = repository.save(model);
+  @PostMapping("/user/{userId}")
+  public ResponseEntity<List<ResumeModel>> saveAll(
+      @RequestBody List<ResumeUpsertDto> dtos, @PathVariable UUID userId) {
+    var models = mapper.fromCreateDtosToModels(dtos, userId);
+    var result = repository.saveAll(models);
     return result != null
         ? ResponseEntity.status(201).body(result)
         : ResponseEntity.badRequest().build();

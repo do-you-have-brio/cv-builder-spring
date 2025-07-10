@@ -2,7 +2,6 @@ package dyhb.api.database.repository;
 
 import dyhb.api.database.models.ProjectModel;
 import java.util.*;
-
 import dyhb.api.database.repository.jpa.ProjectJpaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +23,10 @@ public class ProjectRepository {
 
   public ProjectModel save(ProjectModel model) {
     return jpaRepository.save(model);
+  }
+
+  public List<ProjectModel> saveAll(List<ProjectModel> models) {
+    return jpaRepository.saveAll(models);
   }
 
   public boolean delete(UUID id) {

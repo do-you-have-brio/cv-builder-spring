@@ -4,7 +4,6 @@ import dyhb.api.database.models.EducationModel;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
-
 import java.util.*;
 
 public interface EducationJpaRepository extends JpaRepository<EducationModel, UUID> {

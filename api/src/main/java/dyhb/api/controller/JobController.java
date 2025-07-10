@@ -9,7 +9,6 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.*;
 
 @RestController
@@ -24,22 +23,22 @@ public class JobController {
   @GetMapping("/{id}")
   public ResponseEntity<JobModel> findById(@PathVariable UUID id) {
     return repository
-            .findById(id)
-            .map(ResponseEntity::ok)
-            .orElse(ResponseEntity.notFound().build());
+        .findById(id)
+        .map(ResponseEntity::ok)
+        .orElse(ResponseEntity.notFound().build());
   }
 
-  @GetMapping("/{userId}")
+  @GetMapping("/user/{userId}")
   public ResponseEntity<List<JobModel>> findByUserId(@PathVariable UUID userId) {
     List<JobModel> jobs = repository.findByUserId(userId);
     return !jobs.isEmpty() ? ResponseEntity.ok(jobs) : ResponseEntity.noContent().build();
   }
 
-  @PostMapping("/{userId}")
-  public ResponseEntity<JobModel> save(@RequestBody JobUpsertDto dto, @PathVariable UUID userId) {
-    var model = mapper.fromCreateDtoToModel(dto, userId);
-
-    var result = repository.save(model);
+  @PostMapping("/user/{userId}")
+  public ResponseEntity<List<JobModel>> saveAll(
+      @RequestBody List<JobUpsertDto> dtos, @PathVariable UUID userId) {
+    var models = mapper.fromCreateDtosToModels(dtos, userId);
+    var result = repository.saveAll(models);
     return result != null
         ? ResponseEntity.status(201).body(result)
         : ResponseEntity.badRequest().build();
