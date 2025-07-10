@@ -1,6 +1,6 @@
-package dyhb.api.repository;
+package dyhb.api.database.repository;
 
-import dyhb.api.entities.Projects;
+import dyhb.api.database.models.Projects;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

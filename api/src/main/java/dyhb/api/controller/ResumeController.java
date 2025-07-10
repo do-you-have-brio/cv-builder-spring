@@ -1,7 +1,7 @@
 package dyhb.api.controller;
 
 import dyhb.api.dto.CreateResumeDTO;
-import dyhb.api.entities.Resume;
+import dyhb.api.database.models.Resume;
 import dyhb.api.service.ResumeService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
- package dyhb.api.entities;
+ package dyhb.api.database.models;
 
  import jakarta.persistence.*;
 import lombok.Data;
@@ -6,7 +6,6 @@ import lombok.Data;
  import org.hibernate.annotations.UpdateTimestamp;
 
  import java.util.Date;
- import java.util.List;
  import java.util.UUID;
 
 @Data

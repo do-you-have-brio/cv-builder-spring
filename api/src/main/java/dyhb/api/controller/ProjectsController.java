@@ -1,7 +1,7 @@
 package dyhb.api.controller;
 
 import dyhb.api.dto.CreateProjectsDTO;
-import dyhb.api.entities.Projects;
+import dyhb.api.database.models.Projects;
 import dyhb.api.service.ProjectsService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

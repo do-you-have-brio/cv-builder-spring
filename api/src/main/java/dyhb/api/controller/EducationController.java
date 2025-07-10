@@ -1,7 +1,7 @@
 package dyhb.api.controller;
 
 import dyhb.api.dto.CreateEducationDTO;
-import dyhb.api.entities.Education;
+import dyhb.api.database.models.Education;
 import dyhb.api.service.EducationService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,8 +1,8 @@
 package dyhb.api.service;
 
 import dyhb.api.dto.CreateResumeDTO;
-import dyhb.api.entities.Resume;
-import dyhb.api.repository.ResumeRepository;
+import dyhb.api.database.models.Resume;
+import dyhb.api.database.repository.ResumeRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

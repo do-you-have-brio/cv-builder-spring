@@ -1,8 +1,6 @@
-active_profile: local
-
-auth:
-  jwt:
-    public-key: |
+jwt:
+  public:
+    key: |
       -----BEGIN PUBLIC KEY-----
       MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzjtgINE1keSlRBW/kp0d
       hpABKhJOXlixkx9v47aZ5XQ4xTK+rEGj9ET36BageuO+BD47Ib+wrA92q7S4aaNA
@@ -13,13 +11,14 @@ auth:
       KwIDAQAB
       -----END PUBLIC KEY-----
 
+
 spring:
   application:
     name: api-service
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://postgres:5432/cv-builder}
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/cv-builder}
     username: ${SPRING_DATASOURCE_USERNAME:postgres}
-    password: ${SPRING_DATASOURCE_PASSWORD:password}
+    password: ${SPRING_DATASOURCE_PASSWORD:postgres}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -37,9 +36,12 @@ spring:
   cloud:
     config:
       enabled: false
-
   profiles:
     active: dev
+
+eureka:
+  client:
+    enabled: false
 
 server:
   port: 8090

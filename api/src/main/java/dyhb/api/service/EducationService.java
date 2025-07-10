@@ -1,8 +1,8 @@
 package dyhb.api.service;
 
 import dyhb.api.dto.CreateEducationDTO;
-import dyhb.api.entities.Education;
-import dyhb.api.repository.EducationRepository;
+import dyhb.api.database.models.Education;
+import dyhb.api.database.repository.EducationRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

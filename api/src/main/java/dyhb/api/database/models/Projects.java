@@ -1,4 +1,4 @@
-package dyhb.api.entities;
+package dyhb.api.database.models;
 
 
 import jakarta.persistence.*;

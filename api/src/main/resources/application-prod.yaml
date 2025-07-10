@@ -2,9 +2,6 @@ jwt:
   public:
     key: ${auth.jwt.public-key}
 spring:
-  profiles:
-    active: local
-
   application:
     name: api-service
   datasource:

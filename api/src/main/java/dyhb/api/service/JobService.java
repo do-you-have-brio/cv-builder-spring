@@ -1,8 +1,8 @@
 package dyhb.api.service;
 
 import dyhb.api.dto.CreateJobDTO;
-import dyhb.api.entities.Job;
-import dyhb.api.repository.JobRepository;
+import dyhb.api.database.models.Job;
+import dyhb.api.database.repository.JobRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

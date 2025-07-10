@@ -1,6 +1,6 @@
-package dyhb.api.repository;
+package dyhb.api.database.repository;
 
-import dyhb.api.entities.Education;
+import dyhb.api.database.models.Education;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
