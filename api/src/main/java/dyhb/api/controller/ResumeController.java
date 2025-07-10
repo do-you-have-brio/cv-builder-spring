@@ -1,7 +1,7 @@
 package dyhb.api.controller;
 
 import dyhb.api.database.repository.ResumeRepository;
-import dyhb.api.dto.CreateResumeDTO;
+import dyhb.api.dto.ResumeUpsertDto;
 import dyhb.api.database.models.ResumeModel;
 import dyhb.api.mappers.ResumeMapper;
 import lombok.AllArgsConstructor;
@@ -21,23 +21,42 @@ public class ResumeController {
 
   private final ResumeMapper mapper = Mappers.getMapper(ResumeMapper.class);
 
+  @GetMapping("/{id}")
+  public ResponseEntity<ResumeModel> findById(@PathVariable UUID id) {
+    return repository
+        .findById(id)
+        .map(ResponseEntity::ok)
+        .orElse(ResponseEntity.notFound().build());
+  }
+
   @GetMapping("/{userId}")
   public ResponseEntity<List<ResumeModel>> findByUserId(@PathVariable UUID userId) {
     List<ResumeModel> resumes = repository.findByUserId(userId);
-    return !resumes.isEmpty()
-        ? ResponseEntity.ok(resumes)
-        : ResponseEntity.noContent().build();
+    return !resumes.isEmpty() ? ResponseEntity.ok(resumes) : ResponseEntity.noContent().build();
   }
 
   @PostMapping("/{userId}")
   public ResponseEntity<ResumeModel> save(
-      @RequestBody CreateResumeDTO dto, @PathVariable UUID userId) {
-    var model = mapper.fromCreateDTOtoModel(dto, userId);
+      @RequestBody ResumeUpsertDto dto, @PathVariable UUID userId) {
+    var model = mapper.fromCreateDtoToModel(dto, userId);
 
     var result = repository.save(model);
     return result != null
         ? ResponseEntity.status(201).body(result)
         : ResponseEntity.badRequest().build();
+  }
+
+  @PutMapping("/{id}")
+  public ResponseEntity<ResumeModel> update(
+      @PathVariable UUID id, @RequestBody ResumeUpsertDto dto) {
+    return repository
+        .findById(id)
+        .map(
+            existingModel -> {
+              mapper.updateModelFromDto(dto, existingModel);
+              return ResponseEntity.ok(repository.save(existingModel));
+            })
+        .orElse(ResponseEntity.notFound().build());
   }
 
   @DeleteMapping("/{id}")

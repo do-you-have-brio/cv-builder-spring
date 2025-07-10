@@ -14,6 +14,10 @@ public class JobRepository {
 
   @Autowired private final JobJpaRepository jpaRepository;
 
+  public Optional<JobModel> findById(UUID id) {
+    return jpaRepository.findById(id);
+  }
+
   public List<JobModel> findByUserId(UUID userId) {
     return jpaRepository.findByUserId(userId);
   }

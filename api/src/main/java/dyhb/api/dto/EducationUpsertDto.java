@@ -5,10 +5,9 @@ import java.util.*;
 
 @Getter
 @Builder(toBuilder = true)
-public class CreateEducationDTO {
+public class EducationUpsertDto {
   private String institution;
   private String degree;
-  private String fieldOfStudy;
   private Date startDate;
   private Date endDate;
   private String description;

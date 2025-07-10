@@ -1,8 +1,9 @@
 package dyhb.api.mappers;
 
 import dyhb.api.database.models.ResumeModel;
-import dyhb.api.dto.CreateResumeDTO;
+import dyhb.api.dto.ResumeUpsertDto;
 import java.util.UUID;
+
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
@@ -10,7 +11,11 @@ import org.mapstruct.factory.Mappers;
     nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
     unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ResumeMapper {
-
   ResumeMapper INSTANCE = Mappers.getMapper(ResumeMapper.class);
-  ResumeModel fromCreateDTOtoModel(CreateResumeDTO dto, UUID userId);
+
+  ResumeModel fromCreateDtoToModel(ResumeUpsertDto dto, UUID userId);
+
+  @Mapping(target = "id", ignore = true)
+  @Mapping(target = "userId", ignore = true)
+  ResumeModel updateModelFromDto(ResumeUpsertDto dto, @MappingTarget ResumeModel model);
 }

@@ -1,7 +1,7 @@
 package dyhb.api.controller;
 
 import dyhb.api.database.repository.ProjectRepository;
-import dyhb.api.dto.CreateProjectDTO;
+import dyhb.api.dto.ProjectUpsertDto;
 import dyhb.api.database.models.ProjectModel;
 import dyhb.api.mappers.ProjectMapper;
 import lombok.AllArgsConstructor;
@@ -21,23 +21,42 @@ public class ProjectsController {
 
   private final ProjectMapper mapper = Mappers.getMapper(ProjectMapper.class);
 
+  @GetMapping("/{id}")
+  public ResponseEntity<ProjectModel> findById(@PathVariable UUID id) {
+    return repository
+            .findById(id)
+            .map(ResponseEntity::ok)
+            .orElse(ResponseEntity.notFound().build());
+  }
+
   @GetMapping("/{userId}")
-  public ResponseEntity<List<ProjectModel>> findByUserId(UUID userId) {
+  public ResponseEntity<List<ProjectModel>> findByUserId(@PathVariable UUID userId) {
     List<ProjectModel> projects = repository.findByUserId(userId);
-    return !projects.isEmpty()
-            ? ResponseEntity.ok(projects)
-            : ResponseEntity.noContent().build();
+    return !projects.isEmpty() ? ResponseEntity.ok(projects) : ResponseEntity.noContent().build();
   }
 
   @PostMapping("/{userId}")
   public ResponseEntity<ProjectModel> save(
-      @RequestBody CreateProjectDTO dto, @PathVariable UUID userId) {
-    var model = mapper.fromCreateDTOtoModel(dto, userId);
+      @RequestBody ProjectUpsertDto dto, @PathVariable UUID userId) {
+    var model = mapper.fromCreateDtoToModel(dto, userId);
 
     var result = repository.save(model);
     return result != null
         ? ResponseEntity.status(201).body(result)
         : ResponseEntity.badRequest().build();
+  }
+
+  @PutMapping("/{id}")
+  public ResponseEntity<ProjectModel> update(
+      @PathVariable UUID id, @RequestBody ProjectUpsertDto dto) {
+    return repository
+        .findById(id)
+        .map(
+            existingModel -> {
+              mapper.updateModelFromDto(dto, existingModel);
+              return ResponseEntity.ok(repository.save(existingModel));
+            })
+        .orElse(ResponseEntity.notFound().build());
   }
 
   @DeleteMapping("/{id}")

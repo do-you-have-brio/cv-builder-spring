@@ -4,7 +4,7 @@ import lombok.*;
 
 @Getter
 @Builder(toBuilder = true)
-public class CreateResumeDTO {
+public class ResumeUpsertDto {
   private String name;
   private String link;
 }

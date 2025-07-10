@@ -14,6 +14,10 @@ public class EducationRepository {
 
   @Autowired private final EducationJpaRepository jpaRepository;
 
+  public Optional<EducationModel> findById(UUID id) {
+    return jpaRepository.findById(id);
+  }
+
   public List<EducationModel> findByUserId(UUID userId) {
     return jpaRepository.findByUserId(userId);
   }

@@ -14,6 +14,10 @@ public class ResumeRepository {
 
   @Autowired private final ResumeJpaRepository jpaRepository;
 
+  public Optional<ResumeModel> findById(UUID id) {
+    return jpaRepository.findById(id);
+  }
+
   public List<ResumeModel> findByUserId(UUID userId) {
     return jpaRepository.findByUserId(userId);
   }

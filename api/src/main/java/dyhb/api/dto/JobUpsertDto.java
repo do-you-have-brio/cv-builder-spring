@@ -6,8 +6,8 @@ import java.util.*;
 
 @Getter
 @Builder(toBuilder = true)
-public class CreateJobDTO {
-    private  String title;
+public class JobUpsertDto {
+    private String title;
     private String company;
     private String description;
     private Date startDate;

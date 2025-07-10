@@ -14,6 +14,10 @@ public class ProjectRepository {
 
   @Autowired private final ProjectJpaRepository jpaRepository;
 
+  public Optional<ProjectModel> findById(UUID id) {
+    return jpaRepository.findById(id);
+  }
+
   public List<ProjectModel> findByUserId(UUID userId) {
     return jpaRepository.findByUserId(userId);
   }

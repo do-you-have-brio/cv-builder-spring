@@ -1,7 +1,7 @@
 package dyhb.api.controller;
 
 import dyhb.api.database.repository.EducationRepository;
-import dyhb.api.dto.CreateEducationDTO;
+import dyhb.api.dto.EducationUpsertDto;
 import dyhb.api.database.models.EducationModel;
 import dyhb.api.mappers.EducationMapper;
 import lombok.AllArgsConstructor;
@@ -21,6 +21,14 @@ public class EducationController {
 
   private final EducationMapper mapper = Mappers.getMapper(EducationMapper.class);
 
+  @GetMapping("/{id}")
+  public ResponseEntity<EducationModel> findById(@PathVariable UUID id) {
+    return repository
+        .findById(id)
+        .map(ResponseEntity::ok)
+        .orElse(ResponseEntity.notFound().build());
+  }
+
   @GetMapping("/{userId}")
   public ResponseEntity<List<EducationModel>> findByUserId(@PathVariable UUID userId) {
     List<EducationModel> educations = repository.findByUserId(userId);
@@ -31,13 +39,26 @@ public class EducationController {
 
   @PostMapping("/{userId}")
   public ResponseEntity<EducationModel> save(
-      @RequestBody CreateEducationDTO dto, @PathVariable UUID userId) {
-    var model = mapper.fromCreateDTOtoModel(dto, userId);
+      @RequestBody EducationUpsertDto dto, @PathVariable UUID userId) {
+    var model = mapper.fromCreateDtoToModel(dto, userId);
 
     var result = repository.save(model);
     return result != null
         ? ResponseEntity.status(201).body(result)
         : ResponseEntity.badRequest().build();
+  }
+
+  @PutMapping("/{id}")
+  public ResponseEntity<EducationModel> update(
+      @PathVariable UUID id, @RequestBody EducationUpsertDto dto) {
+    return repository
+        .findById(id)
+        .map(
+            existingModel -> {
+              mapper.updateModelFromDto(dto, existingModel);
+              return ResponseEntity.ok(repository.save(existingModel));
+            })
+        .orElse(ResponseEntity.notFound().build());
   }
 
   @DeleteMapping("/{id}")

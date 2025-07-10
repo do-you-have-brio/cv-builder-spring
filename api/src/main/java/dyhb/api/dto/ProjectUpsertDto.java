@@ -4,7 +4,7 @@ import lombok.*;
 
 @Getter
 @Builder(toBuilder = true)
-public class CreateProjectDTO {
+public class ProjectUpsertDto {
   private String name;
   private String description;
 }
