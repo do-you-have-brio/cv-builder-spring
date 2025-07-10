@@ -31,8 +31,7 @@ public class JobController {
   }
 
   @PostMapping("/{userId}")
-  public ResponseEntity<JobModel> save(
-      @RequestBody CreateJobDTO dto, @PathVariable UUID userId) {
+  public ResponseEntity<JobModel> save(@RequestBody CreateJobDTO dto, @PathVariable UUID userId) {
     var model = mapper.fromCreateDTOtoModel(dto, userId);
     var result = repository.save(model);
 
@@ -40,5 +39,11 @@ public class JobController {
       return ResponseEntity.badRequest().build();
     }
     return ResponseEntity.status(201).body(result);
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Void> delete(@PathVariable UUID id) {
+    boolean deleted = repository.delete(id);
+    return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
   }
 }

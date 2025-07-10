@@ -1,24 +1,14 @@
 package dyhb.api.database.models;
 
-
+import dyhb.api.database.models.base.BaseModel;
 import jakarta.persistence.*;
-import lombok.Data;
-
-import java.util.UUID;
+import lombok.*;
 
 @Data
 @Entity
 @Table(name = "projects")
-public class ProjectModel {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
-
-    private String name;
-    private String description;
-
-    @Column(name = "user_id", nullable = false)
-    private UUID userId;
-
+@EqualsAndHashCode(callSuper = true)
+public class ProjectModel extends BaseModel {
+  private String name;
+  private String description;
 }

@@ -21,4 +21,8 @@ public class ProjectRepository {
   public ProjectModel save(ProjectModel model) {
     return jpaRepository.save(model);
   }
+
+  public boolean delete(UUID id) {
+    return jpaRepository.deleteByUuid(id) == 1;
+  }
 }

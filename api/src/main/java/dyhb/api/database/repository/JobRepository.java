@@ -19,7 +19,10 @@ public class JobRepository {
   }
 
   public JobModel save(JobModel model) {
-
     return jpaRepository.save(model);
+  }
+
+  public boolean delete(UUID id) {
+    return jpaRepository.deleteByUuid(id) == 1;
   }
 }

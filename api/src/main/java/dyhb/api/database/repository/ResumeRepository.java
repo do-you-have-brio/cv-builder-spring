@@ -21,4 +21,8 @@ public class ResumeRepository {
   public ResumeModel save(ResumeModel model) {
     return jpaRepository.save(model);
   }
+
+  public boolean delete(UUID id) {
+    return jpaRepository.deleteByUuid(id) == 1;
+  }
 }

@@ -1,35 +1,22 @@
- package dyhb.api.database.models;
+package dyhb.api.database.models;
 
- import jakarta.persistence.*;
-import lombok.Data;
- import org.hibernate.annotations.CreationTimestamp;
- import org.hibernate.annotations.UpdateTimestamp;
-
- import java.util.Date;
- import java.util.UUID;
+import dyhb.api.database.models.base.BaseModel;
+import jakarta.persistence.*;
+import lombok.*;
+import java.util.Date;
 
 @Data
 @Entity
 @Table(name = "jobs")
-public class JobModel {
+@EqualsAndHashCode(callSuper = true)
+public class JobModel extends BaseModel {
+  private String title;
+  private String company;
+  private String description;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+  @Column(name = "start_date")
+  private Date startDate;
 
-    private String title;
-    private String company;
-    private String description;
-
-    private Date startDate;
-    private Date endDate;
-
-    @Column(name = "user_id", nullable = false)
-    private UUID userId;
-
-    @CreationTimestamp
-    private Date createdAt;
-
-    @UpdateTimestamp
-    private Date updatedAt;
+  @Column(name = "end_date")
+  private Date endDate;
 }

@@ -41,4 +41,10 @@ public class EducationController {
     }
     return ResponseEntity.status(201).body(result);
   }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Void> delete(@PathVariable UUID id) {
+    boolean deleted = repository.delete(id);
+    return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+  }
 }

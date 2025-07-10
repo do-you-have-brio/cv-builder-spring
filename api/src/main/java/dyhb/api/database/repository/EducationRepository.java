@@ -21,4 +21,8 @@ public class EducationRepository {
   public EducationModel save(EducationModel model) {
     return jpaRepository.save(model);
   }
+
+  public boolean delete(UUID id) {
+    return jpaRepository.deleteByUuid(id) == 1;
+  }
 }
