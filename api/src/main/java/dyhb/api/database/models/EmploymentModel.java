@@ -17,7 +17,8 @@ public class EmploymentModel extends BaseModel {
 
   private String location;
 
-  private EmploymentType type;
+  @Column(name = "employment_type")
+  private EmploymentType employmentType;
 
   private List<String> skills;
 

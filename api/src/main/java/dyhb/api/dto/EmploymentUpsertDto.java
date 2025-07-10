@@ -10,7 +10,7 @@ public class EmploymentUpsertDto {
   private String title;
   private String company;
   private String location;
-  private EmploymentType type;
+  private EmploymentType employmentType;
   private List<String> skills;
   private String description;
   private Date startDate;

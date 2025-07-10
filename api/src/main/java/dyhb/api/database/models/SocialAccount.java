@@ -13,8 +13,8 @@ import lombok.*;
 @EqualsAndHashCode(callSuper = true)
 public class SocialAccount extends BaseModel {
   @Enumerated(EnumType.STRING)
-  @Column(nullable = false)
-  private SocialAccountType type;
+  @Column(name = "social_account_type", nullable = false)
+  private SocialAccountType socialAccountType;
 
   @Column(nullable = false)
   private String url;

@@ -14,8 +14,8 @@ public class EducationModel extends BaseModel {
   private String name;
 
   @Enumerated(EnumType.STRING)
-  @Column(nullable = false)
-  private EducationDegree degree;
+  @Column(name = "education_degree", nullable = false)
+  private EducationDegree educationDegree;
 
   private String institution;
 

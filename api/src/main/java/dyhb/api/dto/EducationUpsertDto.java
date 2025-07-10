@@ -8,7 +8,7 @@ import java.util.*;
 @Builder(toBuilder = true)
 public class EducationUpsertDto {
   private String name;
-  private EducationDegree degree;
+  private EducationDegree educationDegree;
   private String institution;
   private String description;
   private Date startDate;
