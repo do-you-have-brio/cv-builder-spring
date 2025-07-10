@@ -24,22 +24,20 @@ public class ResumeController {
   @GetMapping("/{userId}")
   public ResponseEntity<List<ResumeModel>> findByUserId(@PathVariable UUID userId) {
     List<ResumeModel> resumes = repository.findByUserId(userId);
-    if (resumes.isEmpty()) {
-      return ResponseEntity.noContent().build();
-    }
-    return ResponseEntity.ok(resumes);
+    return !resumes.isEmpty()
+        ? ResponseEntity.ok(resumes)
+        : ResponseEntity.noContent().build();
   }
 
   @PostMapping("/{userId}")
   public ResponseEntity<ResumeModel> save(
       @RequestBody CreateResumeDTO dto, @PathVariable UUID userId) {
     var model = mapper.fromCreateDTOtoModel(dto, userId);
-    var result = repository.save(model);
 
-    if (result == null) {
-      return ResponseEntity.badRequest().build();
-    }
-    return ResponseEntity.status(201).body(result);
+    var result = repository.save(model);
+    return result != null
+        ? ResponseEntity.status(201).body(result)
+        : ResponseEntity.badRequest().build();
   }
 
   @DeleteMapping("/{id}")

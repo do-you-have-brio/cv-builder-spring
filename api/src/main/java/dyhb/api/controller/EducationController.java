@@ -23,23 +23,21 @@ public class EducationController {
 
   @GetMapping("/{userId}")
   public ResponseEntity<List<EducationModel>> findByUserId(@PathVariable UUID userId) {
-    List<EducationModel> educationList = repository.findByUserId(userId);
-    if (educationList.isEmpty()) {
-      return ResponseEntity.noContent().build();
-    }
-    return ResponseEntity.ok(educationList);
+    List<EducationModel> educations = repository.findByUserId(userId);
+    return !educations.isEmpty()
+        ? ResponseEntity.ok(educations)
+        : ResponseEntity.noContent().build();
   }
 
   @PostMapping("/{userId}")
   public ResponseEntity<EducationModel> save(
       @RequestBody CreateEducationDTO dto, @PathVariable UUID userId) {
-
     var model = mapper.fromCreateDTOtoModel(dto, userId);
+
     var result = repository.save(model);
-    if (result == null) {
-      return ResponseEntity.badRequest().build();
-    }
-    return ResponseEntity.status(201).body(result);
+    return result != null
+        ? ResponseEntity.status(201).body(result)
+        : ResponseEntity.badRequest().build();
   }
 
   @DeleteMapping("/{id}")

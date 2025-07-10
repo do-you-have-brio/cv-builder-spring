@@ -24,21 +24,19 @@ public class JobController {
   @GetMapping("/{userId}")
   public ResponseEntity<List<JobModel>> findByUserId(@PathVariable UUID userId) {
     List<JobModel> jobs = repository.findByUserId(userId);
-    if (jobs.isEmpty()) {
-      return ResponseEntity.noContent().build();
-    }
-    return ResponseEntity.ok(jobs);
+    return !jobs.isEmpty()
+            ? ResponseEntity.ok(jobs)
+            : ResponseEntity.noContent().build();
   }
 
   @PostMapping("/{userId}")
   public ResponseEntity<JobModel> save(@RequestBody CreateJobDTO dto, @PathVariable UUID userId) {
     var model = mapper.fromCreateDTOtoModel(dto, userId);
-    var result = repository.save(model);
 
-    if (result == null) {
-      return ResponseEntity.badRequest().build();
-    }
-    return ResponseEntity.status(201).body(result);
+    var result = repository.save(model);
+    return result != null
+        ? ResponseEntity.status(201).body(result)
+        : ResponseEntity.badRequest().build();
   }
 
   @DeleteMapping("/{id}")

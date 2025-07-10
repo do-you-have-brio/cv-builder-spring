@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
-@RequestMapping("/api/projects")
+@RequestMapping("/api/project")
 @AllArgsConstructor
 public class ProjectsController {
 
@@ -24,22 +24,20 @@ public class ProjectsController {
   @GetMapping("/{userId}")
   public ResponseEntity<List<ProjectModel>> findByUserId(UUID userId) {
     List<ProjectModel> projects = repository.findByUserId(userId);
-    if (projects.isEmpty()) {
-      return ResponseEntity.noContent().build();
-    }
-    return ResponseEntity.ok(projects);
+    return !projects.isEmpty()
+            ? ResponseEntity.ok(projects)
+            : ResponseEntity.noContent().build();
   }
 
   @PostMapping("/{userId}")
   public ResponseEntity<ProjectModel> save(
       @RequestBody CreateProjectDTO dto, @PathVariable UUID userId) {
     var model = mapper.fromCreateDTOtoModel(dto, userId);
-    var result = repository.save(model);
 
-    if (result == null) {
-      return ResponseEntity.badRequest().build();
-    }
-    return ResponseEntity.status(201).body(result);
+    var result = repository.save(model);
+    return result != null
+        ? ResponseEntity.status(201).body(result)
+        : ResponseEntity.badRequest().build();
   }
 
   @DeleteMapping("/{id}")
