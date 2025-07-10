@@ -21,13 +21,13 @@ spring:
       mode: always
   cloud:
     config:
-      uri: "${CONFIG_SERVER:http://localhost:8888}"
+      uri: "${SPRING_CONFIG_SERVER:http://localhost:8888}"
   config:
-    import: "${CONFIG_SERVER:configserver:http://localhost:8888}"
+    import: "${SPRING_CONFIG_SERVER:configserver:http://localhost:8888}"
 eureka:
   client:
     service-url:
-      defaultZone: ${EUREKA_SERVER:http://localhost:8761/eureka/}
+      defaultZone: ${SPRING_EUREKA_SERVER:http://localhost:8761/eureka/}
 jwt:
   public:
     key: classpath:app.pub
