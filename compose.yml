@@ -67,7 +67,7 @@ services:
       - api-service
       - ai-service
     ports:
-      - "5173:5173"
+      - "5173:80"
 
 volumes:
   postgres_data:
