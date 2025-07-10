@@ -1,24 +1,10 @@
-jwt:
-  public:
-    key: |
-      -----BEGIN PUBLIC KEY-----
-      MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzjtgINE1keSlRBW/kp0d
-      hpABKhJOXlixkx9v47aZ5XQ4xTK+rEGj9ET36BageuO+BD47Ib+wrA92q7S4aaNA
-      yUGXSpfeCDHYSzK2uYDyVGUw1RVJisXIAvgMe7ZT2RTP4joax3h1yD7K9XrJVPyx
-      1Wk1pMM4k0BxdISYcZR/Z4/GfQUfxqrfs8oacjE/drcenm5NtBmVnhefpafS7oTK
-      f3VaWNR2UR+IH3omWVFfXDRn0N6QvT9qPL9HwtkGA0iGP/2pUE83ptHT5/4dRNZF
-      k94noNZrquLJACgkgJ1yICrHLz/ddxetLWBBxRnigohf4GQ6O/t9YJdwBPjntqaL
-      KwIDAQAB
-      -----END PUBLIC KEY-----
-
-
 spring:
   application:
-    name: api-service
+    name: api
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/cv-builder}
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5433/cv-builder}
     username: ${SPRING_DATASOURCE_USERNAME:postgres}
-    password: ${SPRING_DATASOURCE_PASSWORD:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:password}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -35,13 +21,15 @@ spring:
       mode: always
   cloud:
     config:
-      enabled: false
-  profiles:
-    active: dev
-
+      uri: "${CONFIG_SERVER:http://localhost:8888}"
+  config:
+    import: "${CONFIG_SERVER:configserver:http://localhost:8888}"
 eureka:
   client:
-    enabled: false
-
-server:
-  port: 8090
+    service-url:
+      defaultZone: ${EUREKA_SERVER:http://localhost:8761/eureka/}
+jwt:
+  public:
+    key: classpath:app.pub
+  private:
+    key: classpath:app.key

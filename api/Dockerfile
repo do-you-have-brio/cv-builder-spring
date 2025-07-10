@@ -19,5 +19,4 @@ EXPOSE 8090
 
 ENV SPRING_PROFILES_ACTIVE=prod
 
-
 CMD ["java", "-jar", "app.jar", "--spring.profiles.active=${SPRING_PROFILES_ACTIVE}"]
