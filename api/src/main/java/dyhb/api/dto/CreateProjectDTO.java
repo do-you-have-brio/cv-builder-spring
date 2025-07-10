@@ -1,13 +1,13 @@
 package dyhb.api.dto;
 
 
-import lombok.Getter;
+import lombok.*;
 
-import java.util.UUID;
+import java.util.*;
 
 @Getter
-public class CreateProjectsDTO {
-
+@Builder(toBuilder = true)
+public class CreateProjectDTO {
     private UUID id;
     private String name;
     private String description;

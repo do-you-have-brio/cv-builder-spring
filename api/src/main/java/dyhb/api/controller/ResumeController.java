@@ -1,39 +1,44 @@
 package dyhb.api.controller;
 
+import dyhb.api.database.repository.ResumeRepository;
 import dyhb.api.dto.CreateResumeDTO;
-import dyhb.api.database.models.Resume;
-import dyhb.api.service.ResumeService;
+import dyhb.api.database.models.ResumeModel;
+import dyhb.api.mappers.ResumeMapper;
 import lombok.AllArgsConstructor;
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/resume")
 @AllArgsConstructor
 public class ResumeController {
 
-    @Autowired
-    private final ResumeService resumeService;
+  @Autowired private final ResumeRepository repository;
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<List<Resume>> getResume(@PathVariable UUID userId) {
-        List<Resume> resumes = resumeService.getResumeByUserId(userId);
-        if (resumes.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(resumes);
-    }
+  private final ResumeMapper mapper = Mappers.getMapper(ResumeMapper.class);
 
-    @PostMapping("/{userId}")
-    public ResponseEntity<Resume> addResume(@RequestBody CreateResumeDTO createResumeDTO, @PathVariable UUID userId) {
-        Resume resume = resumeService.addResume(createResumeDTO, userId);
-        if (resume == null) {
-            return ResponseEntity.badRequest().build();
-        }
-        return ResponseEntity.status(201).body(resume);
+  @GetMapping("/{userId}")
+  public ResponseEntity<List<ResumeModel>> findByUserId(@PathVariable UUID userId) {
+    List<ResumeModel> resumes = repository.findByUserId(userId);
+    if (resumes.isEmpty()) {
+      return ResponseEntity.noContent().build();
     }
+    return ResponseEntity.ok(resumes);
+  }
+
+  @PostMapping("/{userId}")
+  public ResponseEntity<ResumeModel> save(
+      @RequestBody CreateResumeDTO dto, @PathVariable UUID userId) {
+    var model = mapper.fromCreateDTOtoModel(dto, userId);
+    var result = repository.save(model);
+
+    if (result == null) {
+      return ResponseEntity.badRequest().build();
+    }
+    return ResponseEntity.status(201).body(result);
+  }
 }

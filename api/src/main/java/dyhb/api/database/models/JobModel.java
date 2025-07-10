@@ -11,7 +11,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "jobs")
-public class Job {
+public class JobModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

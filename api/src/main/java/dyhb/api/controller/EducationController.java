@@ -1,41 +1,44 @@
 package dyhb.api.controller;
 
+import dyhb.api.database.repository.EducationRepository;
 import dyhb.api.dto.CreateEducationDTO;
-import dyhb.api.database.models.Education;
-import dyhb.api.service.EducationService;
+import dyhb.api.database.models.EducationModel;
+import dyhb.api.mappers.EducationMapper;
 import lombok.AllArgsConstructor;
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/education")
 @AllArgsConstructor
 public class EducationController {
 
-    @Autowired
-    private EducationService educationService;
+  @Autowired private EducationRepository repository;
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<List<Education>> getEducationByUserId(@PathVariable UUID userId) {
-        List<Education> educationList = educationService.getEducationByUserId(userId);
-        if (educationList.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(educationList);
+  private final EducationMapper mapper = Mappers.getMapper(EducationMapper.class);
+
+  @GetMapping("/{userId}")
+  public ResponseEntity<List<EducationModel>> findByUserId(@PathVariable UUID userId) {
+    List<EducationModel> educationList = repository.findByUserId(userId);
+    if (educationList.isEmpty()) {
+      return ResponseEntity.noContent().build();
     }
+    return ResponseEntity.ok(educationList);
+  }
 
-    @PostMapping("/{userId}")
-    public ResponseEntity<Education> addEducation(@RequestBody CreateEducationDTO educationDTO, @PathVariable UUID userId) {
-        Education education = educationService.addEducation(educationDTO, userId);
-        if (education == null) {
-            return ResponseEntity.badRequest().build();
-        }
-        return ResponseEntity.status(201).body(education);
+  @PostMapping("/{userId}")
+  public ResponseEntity<EducationModel> save(
+      @RequestBody CreateEducationDTO dto, @PathVariable UUID userId) {
 
+    var model = mapper.fromCreateDTOtoModel(dto, userId);
+    var result = repository.save(model);
+    if (result == null) {
+      return ResponseEntity.badRequest().build();
     }
-
+    return ResponseEntity.status(201).body(result);
+  }
 }

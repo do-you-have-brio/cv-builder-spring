@@ -1,12 +1,13 @@
 package dyhb.api.dto;
 
-import lombok.Getter;
+import lombok.*;
 
-import java.util.UUID;
+import java.util.*;
+
 
 @Getter
+@Builder(toBuilder = true)
 public class CreateResumeDTO {
-
     private UUID userId;
     private String name;
     private String link;

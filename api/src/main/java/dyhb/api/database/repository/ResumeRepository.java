@@ -1,13 +1,24 @@
 package dyhb.api.database.repository;
 
-import dyhb.api.database.models.Resume;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import dyhb.api.database.models.ResumeModel;
+import java.util.*;
 
-import java.util.List;
-import java.util.UUID;
+import dyhb.api.database.repository.jpa.ResumeJpaRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-@Repository
-public interface ResumeRepository extends JpaRepository<Resume, UUID> {
-    List<Resume> findByUserId(UUID userId);
+@Service
+@AllArgsConstructor
+public class ResumeRepository {
+
+  @Autowired private final ResumeJpaRepository jpaRepository;
+
+  public List<ResumeModel> findByUserId(UUID userId) {
+    return jpaRepository.findByUserId(userId);
+  }
+
+  public ResumeModel save(ResumeModel model) {
+    return jpaRepository.save(model);
+  }
 }

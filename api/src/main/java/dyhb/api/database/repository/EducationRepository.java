@@ -1,11 +1,24 @@
 package dyhb.api.database.repository;
 
-import dyhb.api.database.models.Education;
-import org.springframework.data.jpa.repository.JpaRepository;
+import dyhb.api.database.models.EducationModel;
+import java.util.*;
 
-import java.util.List;
-import java.util.UUID;
+import dyhb.api.database.repository.jpa.EducationJpaRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-public interface EducationRepository extends JpaRepository<Education, UUID> {
-    List<Education> findByUserId(UUID userId);
+@Service
+@AllArgsConstructor
+public class EducationRepository {
+
+  @Autowired private final EducationJpaRepository jpaRepository;
+
+  public List<EducationModel> findByUserId(UUID userId) {
+    return jpaRepository.findByUserId(userId);
+  }
+
+  public EducationModel save(EducationModel model) {
+    return jpaRepository.save(model);
+  }
 }

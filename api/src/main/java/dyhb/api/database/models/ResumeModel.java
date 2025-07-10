@@ -8,7 +8,7 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name = "resumes")
-public class Resume {
+public class ResumeModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

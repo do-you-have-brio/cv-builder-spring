@@ -11,7 +11,7 @@ import java.util.UUID;
 @Data
 @Entity
 @Table(name = "educations")
-public class Education {
+public class EducationModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

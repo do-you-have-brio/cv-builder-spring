@@ -1,19 +1,17 @@
 package dyhb.api.dto;
 
-import lombok.Getter;
+import lombok.*;
 
-import java.util.Date;
-import java.util.UUID;
+import java.util.*;
+
 
 @Getter
+@Builder(toBuilder = true)
 public class CreateJobDTO {
-
     private UUID id;
     private  String title;
     private String company;
     private String description;
-
     private Date startDate;
     private Date endDate;
-
 }
