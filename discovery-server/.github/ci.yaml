@@ -1,0 +1,39 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_REGION: us-east-1
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::<account-id>:role/github-actions-role
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build & Push images
+        run: |
+          IMAGE_TAG=$(echo $GITHUB_SHA | cut -c1-7)
+
+          SERVICES=(discovery-server config-server auth api ai web)
+
+          for SERVICE in "${SERVICES[@]}"
+          do
+            docker build -t $SERVICE:latest ./$SERVICE
+            docker tag $SERVICE:latest <account-id>.dkr.ecr.$AWS_REGION.amazonaws.com/$SERVICE:$IMAGE_TAG
+            docker push <account-id>.dkr.ecr.$AWS_REGION.amazonaws.com/$SERVICE:$IMAGE_TAG
+          done
