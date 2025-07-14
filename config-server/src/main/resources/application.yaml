@@ -7,10 +7,9 @@ spring:
     config:
       server:
         git:
-          uri: "https://github.com/do-you-have-brio/cv-builder-config"
+          uri: "${SPRING_CONFIG_URL:https://github.com/do-you-have-brio/cv-builder-config}"
 
 eureka:
   client:
     service-url:
-      # defaultZone: ${EUREKA_SERVER:http://localhost:8761/eureka}
-      defaultZone: ${EUREKA_SERVER:http://discovery-server:8761/eureka}
+      defaultZone: ${SPRING_EUREKA_SERVER:http://localhost:8761/eureka}

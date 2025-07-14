@@ -1,16 +1,10 @@
-jwt:
-  public:
-    key: classpath:app.pub
-  private:
-    key: classpath:app.key
 spring:
   application:
-    name: auth-service
+    name: auth
   datasource:
-    # url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5433/cv-builder}
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://postgres:5432/cv-builder}
-    username: ${SPRING_DATASOURCE_USERNAME:postgres}
-    password: ${SPRING_DATASOURCE_PASSWORD:password}
+    url: jdbc:postgresql://localhost:5433/cv-builder
+    username: postgres
+    password: password
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -25,27 +19,17 @@ spring:
   sql:
     init:
       mode: always
-
-  profiles:
-    active: dev
-
   cloud:
     config:
-      uri: http://config-server:8888
-      fail-fast: true
-      retry:
-        enabled: true
-        max-attempts: 20 # Tente 20 vezes
-        initial-interval: 2000 # Comece esperando 2 segundos
-        max-interval: 10000 # Espera máxima entre tentativas
-        multiplier: 1.5 # Aumenta a cada tentativa
-
+      uri: "${SPRING_CONFIG_SERVER:http://localhost:8888}"
   config:
-    # import: "configserver:http://localhost:8888"
-    import: "configserver:http://config-server:8888"
-
+    import: "${SPRING_CONFIG_SERVER:configserver:http://localhost:8888}"
 eureka:
   client:
     service-url:
-      # defaultZone: ${EUREKA_SERVER:http://localhost:8761/eureka}
-      defaultZone: ${EUREKA_SERVER:http://discovery-server:8761/eureka/}
+      defaultZone: ${SPRING_EUREKA_SERVER:http://localhost:8761/eureka/}
+jwt:
+  public:
+    key: classpath:app.pub
+  private:
+    key: classpath:app.key

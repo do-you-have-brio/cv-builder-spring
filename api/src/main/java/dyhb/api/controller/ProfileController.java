@@ -1,28 +1,27 @@
 package dyhb.api.controller;
 
-import dyhb.api.service.ProjectService;
-import dyhb.api.dto.ProjectUpsertDto;
-import dyhb.api.database.models.ProjectModel;
-import dyhb.api.mappers.ProjectMapper;
+import dyhb.api.database.models.ProfileModel;
+import dyhb.api.service.ProfileService;
+import dyhb.api.dto.ProfileUpsertDto;
+import dyhb.api.mappers.ProfileMapper;
+import java.util.*;
 import lombok.AllArgsConstructor;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
-
 @RestController
-@RequestMapping("/api/project")
+@RequestMapping("/api/profile")
 @AllArgsConstructor
-public class ProjectsController {
+public class ProfileController {
 
-  @Autowired private final ProjectService service;
+  @Autowired private ProfileService service;
 
-  private final ProjectMapper mapper = Mappers.getMapper(ProjectMapper.class);
+  private final ProfileMapper mapper = Mappers.getMapper(ProfileMapper.class);
 
   @GetMapping("/{id}")
-  public ResponseEntity<ProjectModel> findById(@PathVariable UUID id) {
+  public ResponseEntity<ProfileModel> findById(@PathVariable UUID id) {
     return service
         .findById(id)
         .map(ResponseEntity::ok)
@@ -30,24 +29,24 @@ public class ProjectsController {
   }
 
   @GetMapping("/user/{userId}")
-  public ResponseEntity<List<ProjectModel>> findByUserId(@PathVariable UUID userId) {
-    List<ProjectModel> projects = service.findByUserId(userId);
-    return !projects.isEmpty() ? ResponseEntity.ok(projects) : ResponseEntity.noContent().build();
+  public ResponseEntity<ProfileModel> findByUserId(@PathVariable UUID userId) {
+    Optional<ProfileModel> profile = service.findByUserId(userId);
+    return profile.map(ResponseEntity::ok).orElse(ResponseEntity.noContent().build());
   }
 
   @PostMapping("/user/{userId}")
-  public ResponseEntity<List<ProjectModel>> saveAll(
-      @RequestBody List<ProjectUpsertDto> dtos, @PathVariable UUID userId) {
-    var models = mapper.fromCreateDtosToModels(dtos, userId);
-    var result = service.saveAll(models);
+  public ResponseEntity<ProfileModel> save(
+      @RequestBody ProfileUpsertDto dto, @PathVariable UUID userId) {
+    var model = mapper.fromCreateDtoToModel(dto, userId);
+    var result = service.save(model);
     return result != null
         ? ResponseEntity.status(201).body(result)
         : ResponseEntity.badRequest().build();
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<ProjectModel> update(
-      @PathVariable UUID id, @RequestBody ProjectUpsertDto dto) {
+  public ResponseEntity<ProfileModel> update(
+      @PathVariable UUID id, @RequestBody ProfileUpsertDto dto) {
     return service
         .findById(id)
         .map(

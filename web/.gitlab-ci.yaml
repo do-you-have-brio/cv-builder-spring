@@ -1,0 +1,35 @@
+stages:
+  - setup
+  - lint
+  - build
+
+default:
+  image: node:20
+  before_script:
+    - corepack enable
+    - pnpm install --frozen-lockfile
+
+cache:
+  paths:
+    - .pnpm-store
+    - node_modules/
+
+# Run only on pushes or merges to dev, staging, or main
+workflow:
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+    - if: '$CI_COMMIT_BRANCH == "dev"'
+    - if: '$CI_COMMIT_BRANCH == "staging"'
+
+lint:
+  stage: lint
+  script:
+    - pnpm lint
+
+build:
+  stage: build
+  script:
+    - pnpm build
+  artifacts:
+    paths:
+      - dist/

@@ -1,28 +1,27 @@
 package dyhb.api.controller;
 
-import dyhb.api.service.ProjectService;
-import dyhb.api.dto.ProjectUpsertDto;
-import dyhb.api.database.models.ProjectModel;
-import dyhb.api.mappers.ProjectMapper;
+import dyhb.api.database.models.SocialAccountModel;
+import dyhb.api.service.SocialAccountService;
+import dyhb.api.dto.SocialAccountUpsertDto;
+import dyhb.api.mappers.SocialAccountMapper;
+import java.util.*;
 import lombok.AllArgsConstructor;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
-
 @RestController
-@RequestMapping("/api/project")
+@RequestMapping("/api/social-account")
 @AllArgsConstructor
-public class ProjectsController {
+public class SocialAccountController {
 
-  @Autowired private final ProjectService service;
+  @Autowired private SocialAccountService service;
 
-  private final ProjectMapper mapper = Mappers.getMapper(ProjectMapper.class);
+  private final SocialAccountMapper mapper = Mappers.getMapper(SocialAccountMapper.class);
 
   @GetMapping("/{id}")
-  public ResponseEntity<ProjectModel> findById(@PathVariable UUID id) {
+  public ResponseEntity<SocialAccountModel> findById(@PathVariable UUID id) {
     return service
         .findById(id)
         .map(ResponseEntity::ok)
@@ -30,14 +29,16 @@ public class ProjectsController {
   }
 
   @GetMapping("/user/{userId}")
-  public ResponseEntity<List<ProjectModel>> findByUserId(@PathVariable UUID userId) {
-    List<ProjectModel> projects = service.findByUserId(userId);
-    return !projects.isEmpty() ? ResponseEntity.ok(projects) : ResponseEntity.noContent().build();
+  public ResponseEntity<List<SocialAccountModel>> findByUserId(@PathVariable UUID userId) {
+    List<SocialAccountModel> socialAccounts = service.findByUserId(userId);
+    return !socialAccounts.isEmpty()
+        ? ResponseEntity.ok(socialAccounts)
+        : ResponseEntity.noContent().build();
   }
 
   @PostMapping("/user/{userId}")
-  public ResponseEntity<List<ProjectModel>> saveAll(
-      @RequestBody List<ProjectUpsertDto> dtos, @PathVariable UUID userId) {
+  public ResponseEntity<List<SocialAccountModel>> saveAll(
+      @RequestBody List<SocialAccountUpsertDto> dtos, @PathVariable UUID userId) {
     var models = mapper.fromCreateDtosToModels(dtos, userId);
     var result = service.saveAll(models);
     return result != null
@@ -46,8 +47,8 @@ public class ProjectsController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<ProjectModel> update(
-      @PathVariable UUID id, @RequestBody ProjectUpsertDto dto) {
+  public ResponseEntity<SocialAccountModel> update(
+      @PathVariable UUID id, @RequestBody SocialAccountUpsertDto dto) {
     return service
         .findById(id)
         .map(

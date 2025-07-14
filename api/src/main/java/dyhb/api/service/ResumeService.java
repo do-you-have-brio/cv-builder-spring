@@ -1,35 +1,35 @@
 package dyhb.api.service;
 
-import dyhb.api.dto.CreateResumeDTO;
-import dyhb.api.entities.Resume;
-import dyhb.api.repository.ResumeRepository;
+import dyhb.api.database.models.ResumeModel;
+import java.util.*;
+import dyhb.api.database.repository.jpa.ResumeJpaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.UUID;
 
 @Service
 @AllArgsConstructor
 public class ResumeService {
 
-    @Autowired
-    private final ResumeRepository resumeRepository;
+  @Autowired private final ResumeJpaRepository jpaRepository;
 
-    public List<Resume> getResumeByUserId(UUID userId) {
-        return resumeRepository.findByUserId(userId);
-    }
+  public Optional<ResumeModel> findById(UUID id) {
+    return jpaRepository.findById(id);
+  }
 
-    public Resume addResume(CreateResumeDTO createResumeDTO, UUID userId) {
-        Resume resume = new Resume();
+  public List<ResumeModel> findByUserId(UUID userId) {
+    return jpaRepository.findByUserId(userId);
+  }
 
-        resume.setName(createResumeDTO.getName());
-        resume.setLink(createResumeDTO.getLink());
+  public ResumeModel save(ResumeModel model) {
+    return jpaRepository.save(model);
+  }
 
-        resume.setUserId(userId);
+  public List<ResumeModel> saveAll(List<ResumeModel> models) {
+    return jpaRepository.saveAll(models);
+  }
 
-        return resumeRepository.save(resume);
-    }
-
+  public boolean delete(UUID id) {
+    return jpaRepository.deleteByUuid(id) == 1;
+  }
 }
