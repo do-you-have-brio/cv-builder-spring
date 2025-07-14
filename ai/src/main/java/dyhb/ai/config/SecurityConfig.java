@@ -1,7 +1,7 @@
 package dyhb.ai.config;
 
 import java.security.interfaces.RSAPublicKey;
-
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,33 +17,38 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
-        @Value("${jwt.public.key}")
-        private RSAPublicKey publicKey;
+    private final JwtPublicKeyProperties keyProperties;
 
-        @Bean
-        public SecurityFilterChain securityFilterChain(HttpSecurity http)
-                        throws Exception {
-                http
-                                .authorizeHttpRequests(authorize -> authorize
-                                                .anyRequest()
-                                                .authenticated())
-                                .csrf(AbstractHttpConfigurer::disable)
-                                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
-                                .sessionManagement(session -> session
-                                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http)
+        throws Exception {
+        http
+            .authorizeHttpRequests(authorize ->
+                authorize.anyRequest().authenticated()
+            )
+            .csrf(AbstractHttpConfigurer::disable)
+            .oauth2ResourceServer(oauth2 ->
+                oauth2.jwt(Customizer.withDefaults())
+            )
+            .sessionManagement(session ->
+                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            );
 
-                return http.build();
-        }
+        return http.build();
+    }
 
-        @Bean
-        public JwtDecoder jwtDecoder() {
-                return NimbusJwtDecoder.withPublicKey(publicKey).build();
-        }
+    @Bean
+    public JwtDecoder jwtDecoder() {
+        return NimbusJwtDecoder.withPublicKey(
+            keyProperties.getRsaPublicKey()
+        ).build();
+    }
 
-        @Bean
-        public BCryptPasswordEncoder passwordEncoder() {
-                return new BCryptPasswordEncoder();
-        }
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 }
