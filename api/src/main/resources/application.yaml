@@ -1,6 +1,6 @@
 spring:
   application:
-    name: api
+    name: api-service
   datasource:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5433/cv-builder}
     username: ${SPRING_DATASOURCE_USERNAME:postgres}
@@ -24,6 +24,7 @@ spring:
       uri: "${SPRING_CONFIG_SERVER:http://localhost:8888}"
   config:
     import: "${SPRING_CONFIG_SERVER:configserver:http://localhost:8888}"
+
 eureka:
   client:
     service-url:
