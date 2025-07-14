@@ -28,8 +28,3 @@ eureka:
   client:
     service-url:
       defaultZone: ${SPRING_EUREKA_SERVER:http://localhost:8761/eureka/}
-jwt:
-  public:
-    key: classpath:app.pub
-  private:
-    key: classpath:app.key
